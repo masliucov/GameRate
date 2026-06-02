@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, Mail } from "lucide-react";
+import { X, Mail, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 interface Props {
@@ -9,8 +9,10 @@ interface Props {
   defaultTab?: "login" | "register";
 }
 
+type View = "login" | "register" | "forgot" | "forgot-sent";
+
 export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
-  const [tab, setTab] = useState<"login" | "register">(defaultTab);
+  const [tab, setTab] = useState<View>(defaultTab);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -44,6 +46,18 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
     setLoading(false);
   }
 
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    const supabase = createClient();
+    const redirectTo = `${window.location.origin}/auth/callback?next=/auth/reset-password`;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) setError(error.message);
+    else setTab("forgot-sent");
+    setLoading(false);
+  }
+
   const inputStyle = {
     background: "var(--bg-input)",
     color: "var(--text-primary)",
@@ -61,7 +75,84 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
         style={{ background: "var(--bg-card)", boxShadow: "var(--shadow-lg)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        {registered ? (
+        {tab === "forgot" || tab === "forgot-sent" ? (
+          /* Ecrã de recuperação de password */
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={() => { setTab("login"); setError(""); }}
+                className="flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
+                style={{ color: "var(--text-secondary)" }}
+                aria-label="Voltar ao login"
+              >
+                <ArrowLeft size={14} /> Voltar
+              </button>
+              <button onClick={onClose} className="transition-opacity hover:opacity-60" style={{ color: "var(--text-tertiary)" }} aria-label="Fechar">
+                <X size={18} />
+              </button>
+            </div>
+
+            {tab === "forgot" ? (
+              <>
+                <div className="text-center mb-5">
+                  <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+                    Recuperar password
+                  </h2>
+                  <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                    Indica o teu email e enviamos-te um link para redefinir a password.
+                  </p>
+                </div>
+                <form onSubmit={handleForgotPassword} className="flex flex-col gap-3">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    required
+                    autoFocus
+                    className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
+                    style={inputStyle}
+                  />
+                  {error && <p className="text-xs text-red-500">{error}</p>}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-2.5 rounded-xl text-sm font-semibold text-white mt-1 transition-opacity disabled:opacity-50"
+                    style={{ background: "var(--accent)" }}
+                  >
+                    {loading ? "A enviar…" : "Enviar link de recuperação"}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="flex flex-col items-center text-center py-4 gap-4">
+                <div
+                  className="w-14 h-14 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--accent)22" }}
+                >
+                  <Mail size={28} style={{ color: "var(--accent)" }} />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
+                    Verifica o teu email
+                  </h2>
+                  <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                    Enviámos um link de recuperação para
+                  </p>
+                  <p className="text-sm font-semibold mt-0.5" style={{ color: "var(--accent)" }}>
+                    {email}
+                  </p>
+                  <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
+                    Clica no link para definires uma nova password.
+                  </p>
+                </div>
+                <p className="text-xs" style={{ color: "var(--text-tertiary)" }}>
+                  Não recebeste o email? Verifica a pasta de spam.
+                </p>
+              </div>
+            )}
+          </>
+        ) : registered ? (
           /* Ecrã de confirmação de email */
           <>
             <div className="flex items-center justify-end mb-2">
@@ -156,6 +247,19 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                 className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
                 style={inputStyle}
               />
+
+              {tab === "login" && (
+                <div className="flex justify-end -mt-1">
+                  <button
+                    type="button"
+                    onClick={() => { setTab("forgot"); setError(""); setPassword(""); }}
+                    className="text-xs font-medium transition-opacity hover:opacity-70"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    Esqueceste-te da password?
+                  </button>
+                </div>
+              )}
 
               {error && <p className="text-xs text-red-500">{error}</p>}
 
