@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Star } from "lucide-react";
+import { Star, Monitor, Gamepad2, Smartphone, Apple, Terminal } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Game } from "@/lib/rawg";
 
 interface Props {
@@ -9,34 +10,38 @@ interface Props {
 
 function MetaScore({ score }: { score: number }) {
   const color =
-    score >= 75 ? { bg: "#dcfce7", text: "#15803d" } :
-    score >= 50 ? { bg: "#fef9c3", text: "#854d0e" } :
-    { bg: "#fee2e2", text: "#b91c1c" };
+    score >= 75 ? { bg: "rgba(34,197,94,0.15)", text: "#22c55e", ring: "rgba(34,197,94,0.35)" } :
+    score >= 50 ? { bg: "rgba(234,179,8,0.15)", text: "#eab308", ring: "rgba(234,179,8,0.35)" } :
+    { bg: "rgba(239,68,68,0.15)", text: "#ef4444", ring: "rgba(239,68,68,0.35)" };
 
   return (
     <span
-      className="text-[10px] font-bold px-1.5 py-0.5 rounded-md"
-      style={{ background: color.bg, color: color.text }}
+      className="text-[10px] font-bold px-1.5 py-0.5 rounded-md backdrop-blur-sm"
+      style={{ background: color.bg, color: color.text, boxShadow: `inset 0 0 0 1px ${color.ring}` }}
     >
       {score}
     </span>
   );
 }
 
-const PLATFORM_ICONS: Record<string, string> = {
-  pc: "🖥",
-  playstation: "🎮",
-  xbox: "🅧",
-  nintendo: "🕹",
-  ios: "📱",
-  android: "📱",
-  mac: "🍎",
-  linux: "🐧",
+const PLATFORM_ICONS: Record<string, LucideIcon> = {
+  pc: Monitor,
+  playstation: Gamepad2,
+  xbox: Gamepad2,
+  nintendo: Gamepad2,
+  ios: Smartphone,
+  android: Smartphone,
+  mac: Apple,
+  linux: Terminal,
 };
 
 export default function GameCard({ game }: Props) {
   return (
-    <Link href={`/games/${game.slug}`} className="group block">
+    <Link
+      href={`/games/${game.slug}`}
+      aria-label={`Ver detalhes de ${game.name}`}
+      className="group block rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-[var(--bg)]"
+    >
       <div
         className="card overflow-hidden"
         style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
@@ -52,7 +57,9 @@ export default function GameCard({ game }: Props) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-3xl opacity-30">🎮</div>
+            <div className="w-full h-full flex items-center justify-center opacity-30">
+              <Gamepad2 size={32} aria-hidden="true" />
+            </div>
           )}
           {game.metacritic && (
             <div className="absolute top-2 right-2">
@@ -72,7 +79,7 @@ export default function GameCard({ game }: Props) {
 
           <div className="flex items-center justify-between">
             {/* Platforms */}
-            <div className="flex gap-0.5">
+            <div className="flex gap-1.5 items-center">
               {(() => {
                 if (!game.platforms?.length) return null;
                 const seen = new Set<string>();
@@ -80,9 +87,15 @@ export default function GameCard({ game }: Props) {
                   const key = platform.slug.split("-")[0];
                   if (seen.has(key)) return null;
                   seen.add(key);
+                  const Icon = PLATFORM_ICONS[key] ?? Gamepad2;
                   return (
-                    <span key={platform.id} className="text-xs opacity-50" title={platform.name}>
-                      {PLATFORM_ICONS[key] ?? "🎮"}
+                    <span
+                      key={platform.id}
+                      className="opacity-60"
+                      title={platform.name}
+                      aria-label={platform.name}
+                    >
+                      <Icon size={12} aria-hidden="true" />
                     </span>
                   );
                 });
