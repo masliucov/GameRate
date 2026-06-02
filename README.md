@@ -216,6 +216,52 @@ create policy "Users can update their own avatar"
   on storage.objects for update using (bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]);
 ```
 
+Then, to enable the admin dashboard (roles + banning), run this additional block. Replace the email on line `set role = 'super_admin'` with the account that should be the first super admin:
+
+```sql
+-- Admin roles + banning
+
+alter table public.profiles
+  add column if not exists role text not null default 'user'
+    check (role in ('user', 'admin', 'super_admin')),
+  add column if not exists banned_at timestamptz,
+  add column if not exists banned_reason text;
+
+create index if not exists profiles_role_idx on public.profiles (role);
+create index if not exists profiles_banned_at_idx on public.profiles (banned_at);
+
+-- Seed the first super admin (change the email below)
+update public.profiles
+set role = 'super_admin'
+where id = (select id from auth.users where email = 'your-email@example.com');
+
+-- Helpers
+create or replace function public.is_admin(uid uuid)
+returns boolean language sql security definer stable as $$
+  select coalesce((select role in ('admin', 'super_admin') from public.profiles where id = uid), false);
+$$;
+
+create or replace function public.is_super_admin(uid uuid)
+returns boolean language sql security definer stable as $$
+  select coalesce((select role = 'super_admin' from public.profiles where id = uid), false);
+$$;
+
+-- Only super_admin can change roles via direct DB writes
+drop policy if exists "profiles_super_admin_update_role" on public.profiles;
+create policy "profiles_super_admin_update_role"
+  on public.profiles for update
+  using (public.is_super_admin(auth.uid()))
+  with check (public.is_super_admin(auth.uid()));
+
+-- Admins can delete any review; users can still delete their own
+drop policy if exists "game_ratings_admin_delete" on public.game_ratings;
+create policy "game_ratings_admin_delete"
+  on public.game_ratings for delete
+  using (public.is_admin(auth.uid()) or auth.uid() = user_id);
+```
+
+After running this, the seeded super admin will see a **Dashboard de Admin** link in the user menu and can access `/admin` to manage users (promote/demote, ban, delete reviews).
+
 ### 4. Run the development server
 
 ```bash

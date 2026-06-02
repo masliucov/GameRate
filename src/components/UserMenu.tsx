@@ -3,9 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { User, LogOut, Library, Heart, Star, Gamepad2, Rss, Settings } from "lucide-react";
+import { User, LogOut, Library, Heart, Star, Gamepad2, Rss, Settings, ShieldAlert } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { useUser } from "./SupabaseProvider";
+import { useUser, useRole } from "./SupabaseProvider";
 
 const MENU_ITEMS = [
   { href: "/profile?tab=library",  icon: Library,  label: "Biblioteca" },
@@ -17,6 +17,8 @@ const MENU_ITEMS = [
 
 export default function UserMenu() {
   const user = useUser();
+  const role = useRole();
+  const isAdmin = role === "admin" || role === "super_admin";
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -92,6 +94,21 @@ export default function UserMenu() {
                 {label}
               </Link>
             ))}
+
+            {isAdmin && (
+              <>
+                <div className="my-1 border-t" style={{ borderColor: "var(--border-subtle)" }} />
+                <Link
+                  href="/admin"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+                  style={{ color: "var(--accent)" }}
+                >
+                  <ShieldAlert size={14} />
+                  Dashboard de Admin
+                </Link>
+              </>
+            )}
 
             <div className="my-1 border-t" style={{ borderColor: "var(--border-subtle)" }} />
 
