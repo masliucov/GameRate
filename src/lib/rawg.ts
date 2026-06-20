@@ -1,6 +1,13 @@
 const API_KEY = process.env.NEXT_PUBLIC_RAWG_API_KEY!;
 const BASE_URL = "https://api.rawg.io/api";
 
+// ISR revalidation windows (seconds)
+const REVALIDATE_GAMES = 1800; // game lists / detail: 30 min
+const REVALIDATE_STATIC = 86400; // genres / platform stats: 24 h
+
+// Cache tag for on-demand revalidation of all RAWG data (see app/api/revalidate)
+export const GAMES_TAG = "games";
+
 export interface Game {
   id: number;
   name: string;
@@ -108,7 +115,7 @@ export async function getPopularGames(page = 1, pageSize = 20, genreFilter?: str
     ...(genreFilter && { genres: genreFilter }),
     ...(yearFilter && { dates: `${yearFilter}-01-01,${yearFilter}-12-31` }),
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch popular games");
   return res.json();
 }
@@ -122,7 +129,7 @@ export async function getNewGames(page = 1, pageSize = 20, genreFilter?: string,
     exclude_additions: 1,
     ...(genreFilter && { genres: genreFilter }),
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch new games");
   return res.json();
 }
@@ -133,7 +140,7 @@ export async function getTrendingGames(pageSize = 10): Promise<GamesResponse> {
     page_size: pageSize,
     exclude_additions: 1,
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch trending games");
   return res.json();
 }
@@ -153,7 +160,7 @@ export async function getHeroGames(): Promise<Game[]> {
         page_size: 12,
         exclude_additions: 1,
       }),
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } }
     ).then((r) => r.json() as Promise<GamesResponse>),
     fetch(
       buildUrl("/games", {
@@ -162,7 +169,7 @@ export async function getHeroGames(): Promise<Game[]> {
         page_size: 8,
         exclude_additions: 1,
       }),
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } }
     ).then((r) => r.json() as Promise<GamesResponse>),
   ]);
 
@@ -208,21 +215,21 @@ export async function searchGames(
 
 export async function getGameBySlug(slug: string): Promise<Game> {
   const url = buildUrl(`/games/${slug}`);
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch game");
   return res.json();
 }
 
 export async function getGameAdditions(slug: string): Promise<GamesResponse> {
   const url = buildUrl(`/games/${slug}/additions`);
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) return { count: 0, next: null, previous: null, results: [] };
   return res.json();
 }
 
 export async function getGameScreenshots(slug: string): Promise<{ results: Screenshot[] }> {
   const url = buildUrl(`/games/${slug}/screenshots`);
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) return { results: [] };
   return res.json();
 }
@@ -240,15 +247,15 @@ export async function getGamesByGenre(
     page_size: pageSize,
     exclude_additions: 1,
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch games by genre");
   return res.json();
 }
 
 export async function getPlatformStats(): Promise<{ games: number; dlcs: number }> {
   const [gamesRes, totalRes] = await Promise.all([
-    fetch(buildUrl("/games", { page_size: 1, exclude_additions: 1 }), { next: { revalidate: 86400 } }),
-    fetch(buildUrl("/games", { page_size: 1 }), { next: { revalidate: 86400 } }),
+    fetch(buildUrl("/games", { page_size: 1, exclude_additions: 1 }), { next: { revalidate: REVALIDATE_STATIC, tags: [GAMES_TAG] } }),
+    fetch(buildUrl("/games", { page_size: 1 }), { next: { revalidate: REVALIDATE_STATIC, tags: [GAMES_TAG] } }),
   ]);
   const [games, total] = await Promise.all([gamesRes.json(), totalRes.json()]);
   return { games: games.count ?? 0, dlcs: (total.count ?? 0) - (games.count ?? 0) };
@@ -256,7 +263,7 @@ export async function getPlatformStats(): Promise<{ games: number; dlcs: number 
 
 export async function getGenres(): Promise<GenresResponse> {
   const url = buildUrl("/genres");
-  const res = await fetch(url, { next: { revalidate: 86400 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_STATIC, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch genres");
   return res.json();
 }
@@ -271,7 +278,7 @@ export async function getTopRatedGames(page = 1, pageSize = 20, genreFilter?: st
     ...(genreFilter && { genres: genreFilter }),
     ...(yearFilter && { dates: `${yearFilter}-01-01,${yearFilter}-12-31` }),
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch top rated games");
   return res.json();
 }
@@ -286,7 +293,7 @@ export async function getUserRatedGames(page = 1, pageSize = 20, genreFilter?: s
     ...(genreFilter && { genres: genreFilter }),
     ...(yearFilter && { dates: `${yearFilter}-01-01,${yearFilter}-12-31` }),
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch user rated games");
   return res.json();
 }
@@ -300,7 +307,7 @@ export async function getMostReviewedGames(page = 1, pageSize = 20, genreFilter?
     ...(genreFilter && { genres: genreFilter }),
     ...(yearFilter && { dates: `${yearFilter}-01-01,${yearFilter}-12-31` }),
   });
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, { next: { revalidate: REVALIDATE_GAMES, tags: [GAMES_TAG] } });
   if (!res.ok) throw new Error("Failed to fetch most reviewed games");
   return res.json();
 }

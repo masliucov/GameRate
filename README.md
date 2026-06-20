@@ -45,6 +45,7 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_SUPABASE_URL`      | Supabase → Project Settings → General → **Project ID** (format: `https://<project-id>.supabase.co`) |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API Keys → Legacy API keys → **anon public**                          |
 | `SUPABASE_SERVICE_ROLE_KEY`     | Supabase → Project Settings → API Keys → Legacy API keys → **service_role**                         |
+| `REVALIDATE_SECRET`             | Any long random string (e.g. `openssl rand -hex 32`) — guards the scheduled cache-refresh endpoint   |
 
 ### 3. Set up the database
 
@@ -286,7 +287,48 @@ The easiest way to deploy is with [Vercel](https://vercel.com).
 | `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL    |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon key       |
 | `SUPABASE_SERVICE_ROLE_KEY`     | Your Supabase service role key |
+| `REVALIDATE_SECRET`             | Same random string as in `.env.local` |
 
 4. Deploy
 
 Make sure the Supabase project's **Auth → URL Configuration** includes your production URL in the allowed redirect URLs.
+
+---
+
+## Keeping game data fresh (scheduled cache refresh)
+
+Game lists come from the RAWG API and are cached with Next.js ISR (`revalidate` —
+30 min for game data). Since ISR only refreshes on an incoming request, a site with
+little traffic can keep serving stale data. To guarantee freshness regardless of
+traffic, a GitHub Actions workflow pings the site on a schedule and forces a refresh.
+
+**How it works**
+
+1. RAWG fetches in `src/lib/rawg.ts` are tagged with the `games` cache tag.
+2. `POST /api/revalidate` (`src/app/api/revalidate/route.ts`) checks a bearer secret
+   and calls `revalidateTag("games", { expire: 0 })`, so the next visitor re-fetches
+   fresh data instead of being served stale.
+3. `.github/workflows/refresh-games.yml` runs daily (06:00 UTC) — and on demand — and
+   `curl`s that endpoint.
+
+No `git push` or redeploy is involved; only the data cache is invalidated.
+
+**Setup**
+
+1. Set `REVALIDATE_SECRET` in Vercel (same value as your `.env.local`).
+2. In the GitHub repo, go to **Settings → Secrets and variables → Actions** and add:
+
+   | Secret              | Value                                                  |
+   | ------------------- | ------------------------------------------------------ |
+   | `SITE_URL`          | Your production URL, e.g. `https://gamerate.vercel.app` |
+   | `REVALIDATE_SECRET` | The same secret you set in Vercel                      |
+
+3. Trigger it once from the **Actions** tab (**Run workflow**) to verify — a
+   successful run returns `{ "revalidated": true, "tag": "games" }`.
+
+Test the endpoint locally too:
+
+```bash
+curl -i -X POST -H "Authorization: Bearer $REVALIDATE_SECRET" \
+  http://localhost:3000/api/revalidate
+```

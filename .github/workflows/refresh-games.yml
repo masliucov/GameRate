@@ -1,0 +1,37 @@
+name: Refresh games cache
+
+# Periodically asks the deployed site to revalidate its RAWG cache, so new
+# games show up even when the site has no organic traffic to trigger ISR.
+on:
+  schedule:
+    - cron: "0 6 * * *" # every day at 06:00 UTC
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger RAWG cache revalidation
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+        run: |
+          if [ -z "$SITE_URL" ] || [ -z "$REVALIDATE_SECRET" ]; then
+            echo "::error::SITE_URL and REVALIDATE_SECRET repository secrets must be set."
+            exit 1
+          fi
+
+          status=$(curl -sS -X POST \
+            -o /tmp/revalidate-body.txt \
+            -w "%{http_code}" \
+            -H "Authorization: Bearer ${REVALIDATE_SECRET}" \
+            "${SITE_URL%/}/api/revalidate")
+
+          echo "HTTP $status"
+          cat /tmp/revalidate-body.txt
+          echo ""
+
+          if [ "$status" != "200" ]; then
+            echo "::error::Revalidation failed with HTTP $status"
+            exit 1
+          fi
