@@ -79,7 +79,7 @@ export default function ReviewReactions({ reviewId, reviewOwnerId, initialLikes,
       <button
         onClick={() => handleReaction("like")}
         disabled={!user}
-        title={!user ? "Entra para reagir" : undefined}
+        title={!user ? "Sign in to react" : undefined}
         className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-all disabled:cursor-default"
         style={{
           background: userReaction === "like" ? "var(--accent)22" : "var(--bg-input)",
@@ -93,7 +93,7 @@ export default function ReviewReactions({ reviewId, reviewOwnerId, initialLikes,
       <button
         onClick={() => handleReaction("dislike")}
         disabled={!user}
-        title={!user ? "Entra para reagir" : undefined}
+        title={!user ? "Sign in to react" : undefined}
         className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition-all disabled:cursor-default"
         style={{
           background: userReaction === "dislike" ? "#ef444420" : "var(--bg-input)",

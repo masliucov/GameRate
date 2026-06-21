@@ -8,10 +8,10 @@ import { createClient } from "@/lib/supabase/client";
 import { useUser, useRole } from "./SupabaseProvider";
 
 const MENU_ITEMS = [
-  { href: "/profile?tab=library",  icon: Library,  label: "Biblioteca" },
-  { href: "/profile?tab=playing",  icon: Gamepad2, label: "A jogar" },
-  { href: "/profile?tab=wishlist", icon: Heart,    label: "Lista de desejos" },
-  { href: "/profile?tab=ratings",  icon: Star,     label: "Avaliações" },
+  { href: "/profile?tab=library",  icon: Library,  label: "Library" },
+  { href: "/profile?tab=playing",  icon: Gamepad2, label: "Playing" },
+  { href: "/profile?tab=wishlist", icon: Heart,    label: "Wishlist" },
+  { href: "/profile?tab=ratings",  icon: Star,     label: "Ratings" },
   { href: "/feed",                 icon: Rss,      label: "Feed" },
 ];
 
@@ -38,7 +38,7 @@ export default function UserMenu() {
 
   if (!user) return null;
 
-  const name = user.user_metadata?.username ?? user.email?.split("@")[0] ?? "Utilizador";
+  const name = user.user_metadata?.username ?? user.email?.split("@")[0] ?? "User";
   const initials = name[0].toUpperCase();
   const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
 
@@ -59,7 +59,7 @@ export default function UserMenu() {
           className="absolute right-0 top-full mt-2 w-56 rounded-2xl overflow-hidden z-50"
           style={{ background: "var(--bg-elevated)", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border-subtle)" }}
         >
-          {/* Informação do utilizador */}
+          {/* User info */}
           <Link
             href="/profile"
             onClick={() => setOpen(false)}
@@ -119,7 +119,7 @@ export default function UserMenu() {
               style={{ color: "var(--text-secondary)" }}
             >
               <Settings size={14} style={{ color: "var(--text-tertiary)" }} />
-              Definições
+              Settings
             </Link>
 
             <button
@@ -128,7 +128,7 @@ export default function UserMenu() {
               style={{ color: "#ef4444" }}
             >
               <LogOut size={14} />
-              Terminar sessão
+              Sign out
             </button>
           </div>
         </div>

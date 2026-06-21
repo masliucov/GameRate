@@ -26,7 +26,7 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setError(error.message === "Invalid login credentials" ? "Email ou password incorretos." : error.message);
+    if (error) setError(error.message === "Invalid login credentials" ? "Incorrect email or password." : error.message);
     else onClose();
     setLoading(false);
   }
@@ -76,18 +76,18 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         {tab === "forgot" || tab === "forgot-sent" ? (
-          /* Ecrã de recuperação de password */
+          /* Password recovery screen */
           <>
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={() => { setTab("login"); setError(""); }}
                 className="flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-70"
                 style={{ color: "var(--text-secondary)" }}
-                aria-label="Voltar ao login"
+                aria-label="Back to login"
               >
-                <ArrowLeft size={14} /> Voltar
+                <ArrowLeft size={14} /> Back
               </button>
-              <button onClick={onClose} className="transition-opacity hover:opacity-60" style={{ color: "var(--text-tertiary)" }} aria-label="Fechar">
+              <button onClick={onClose} className="transition-opacity hover:opacity-60" style={{ color: "var(--text-tertiary)" }} aria-label="Close">
                 <X size={18} />
               </button>
             </div>
@@ -96,10 +96,10 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
               <>
                 <div className="text-center mb-5">
                   <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
-                    Recuperar password
+                    Recover password
                   </h2>
                   <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                    Indica o teu email e enviamos-te um link para redefinir a password.
+                    Enter your email and we'll send you a link to reset your password.
                   </p>
                 </div>
                 <form onSubmit={handleForgotPassword} className="flex flex-col gap-3">
@@ -120,7 +120,7 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                     className="w-full py-2.5 rounded-xl text-sm font-semibold text-white mt-1 transition-opacity disabled:opacity-50"
                     style={{ background: "var(--accent)" }}
                   >
-                    {loading ? "A enviar…" : "Enviar link de recuperação"}
+                    {loading ? "Sending…" : "Send recovery link"}
                   </button>
                 </form>
               </>
@@ -134,26 +134,26 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
-                    Verifica o teu email
+                    Check your email
                   </h2>
                   <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                    Enviámos um link de recuperação para
+                    We sent a recovery link to
                   </p>
                   <p className="text-sm font-semibold mt-0.5" style={{ color: "var(--accent)" }}>
                     {email}
                   </p>
                   <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
-                    Clica no link para definires uma nova password.
+                    Click the link to set a new password.
                   </p>
                 </div>
                 <p className="text-xs" style={{ color: "var(--text-tertiary)" }}>
-                  Não recebeste o email? Verifica a pasta de spam.
+                  Didn't get the email? Check your spam folder.
                 </p>
               </div>
             )}
           </>
         ) : registered ? (
-          /* Ecrã de confirmação de email */
+          /* Email confirmation screen */
           <>
             <div className="flex items-center justify-end mb-2">
               <button onClick={onClose} className="transition-opacity hover:opacity-60" style={{ color: "var(--text-tertiary)" }}>
@@ -169,16 +169,16 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
               </div>
               <div>
                 <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text-primary)" }}>
-                  Confirma o teu email
+                  Confirm your email
                 </h2>
                 <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                  Enviámos um link de confirmação para
+                  We sent a confirmation link to
                 </p>
                 <p className="text-sm font-semibold mt-0.5" style={{ color: "var(--accent)" }}>
                   {email}
                 </p>
                 <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
-                  Abre o teu email e clica no link para ativar a conta.
+                  Open your email and click the link to activate your account.
                 </p>
               </div>
               <button
@@ -186,10 +186,10 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                 className="w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
                 style={{ background: "var(--accent)" }}
               >
-                Já confirmei, entrar
+                I've confirmed, sign in
               </button>
               <p className="text-xs" style={{ color: "var(--text-tertiary)" }}>
-                Não recebeste o email? Verifica a pasta de spam.
+                Didn't get the email? Check your spam folder.
               </p>
             </div>
           </>
@@ -208,7 +208,7 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                       color: tab === t ? "var(--accent)" : "var(--text-tertiary)",
                     }}
                   >
-                    {t === "login" ? "Entrar" : "Criar conta"}
+                    {t === "login" ? "Sign in" : "Create account"}
                   </button>
                 ))}
               </div>
@@ -222,7 +222,7 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                 <input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Nome de utilizador"
+                  placeholder="Username"
                   required
                   className="w-full rounded-xl px-4 py-2.5 text-sm outline-none"
                   style={inputStyle}
@@ -256,7 +256,7 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                     className="text-xs font-medium transition-opacity hover:opacity-70"
                     style={{ color: "var(--accent)" }}
                   >
-                    Esqueceste-te da password?
+                    Forgot your password?
                   </button>
                 </div>
               )}
@@ -269,17 +269,17 @@ export default function AuthModal({ onClose, defaultTab = "login" }: Props) {
                 className="w-full py-2.5 rounded-xl text-sm font-semibold text-white mt-1 transition-opacity disabled:opacity-50"
                 style={{ background: "var(--accent)" }}
               >
-                {loading ? "A processar…" : tab === "login" ? "Entrar" : "Criar conta"}
+                {loading ? "Processing…" : tab === "login" ? "Sign in" : "Create account"}
               </button>
             </form>
 
             <p className="text-center text-xs mt-4" style={{ color: "var(--text-tertiary)" }}>
               {tab === "login" ? (
-                <>Ainda não tens conta?{" "}
+                <>Don't have an account yet?{" "}
                   <button onClick={() => setTab("register")} className="font-medium" style={{ color: "var(--accent)" }}>Regista-te</button>
                 </>
               ) : (
-                <>Já tens conta?{" "}
+                <>Already have an account?{" "}
                   <button onClick={() => setTab("login")} className="font-medium" style={{ color: "var(--accent)" }}>Entra aqui</button>
                 </>
               )}

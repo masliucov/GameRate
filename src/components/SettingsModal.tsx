@@ -58,7 +58,7 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { setError("Imagem demasiado grande (máx. 2MB)."); return; }
+    if (file.size > 2 * 1024 * 1024) { setError("Image too large (max. 2MB)."); return; }
     setUploading(true);
     setError("");
     const supabase = createClient();
@@ -66,7 +66,7 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
     const path = `${user.id}/avatar.${ext}`;
     const { error: uploadError } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
     if (uploadError) {
-      setError("Erro ao carregar imagem.");
+      setError("Error loading image.");
       setUploading(false);
       return;
     }
@@ -102,7 +102,7 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
     ]);
 
     if (profileRes.error || userRes.error) {
-      setError("Erro ao guardar. Tenta novamente.");
+      setError("Error saving. Please try again.");
     } else {
       onSave(name);
       onClose();
@@ -127,9 +127,9 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
 
   function availabilityMessage() {
     if (isUnchanged) return null;
-    if (availability === "available") return <span className="text-green-600 text-xs">Nome disponível</span>;
-    if (availability === "taken") return <span className="text-red-500 text-xs">Nome já está a ser usado</span>;
-    if (availability === "invalid") return <span className="text-red-500 text-xs">Apenas letras, números e _ (mín. 3 caracteres)</span>;
+    if (availability === "available") return <span className="text-green-600 text-xs">Name available</span>;
+    if (availability === "taken") return <span className="text-red-500 text-xs">Name already taken</span>;
+    if (availability === "invalid") return <span className="text-red-500 text-xs">Only letters, numbers and _ (min. 3 characters)</span>;
     return null;
   }
 
@@ -140,7 +140,7 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
       <div className="w-full max-w-sm rounded-2xl p-6" style={{ background: "var(--bg-card)", boxShadow: "var(--shadow-lg)" }} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>Definições</h2>
+          <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>Settings</h2>
           <button onClick={onClose} className="transition-opacity hover:opacity-60" style={{ color: "var(--text-tertiary)" }}>
             <X size={18} />
           </button>
@@ -153,7 +153,7 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
             className="relative group"
-            title="Alterar foto de perfil"
+            title="Change profile photo"
           >
             <div
               className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center text-2xl font-bold text-white relative"
@@ -198,13 +198,13 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
 
           {/* Username */}
           <div>
-            <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--text-tertiary)" }}>Nome de utilizador</label>
+            <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--text-tertiary)" }}>Username</label>
             <div className="relative">
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="nome_utilizador"
+                placeholder="username"
                 maxLength={30}
                 className="w-full rounded-xl px-4 py-2.5 text-sm outline-none pr-10"
                 style={inputStyle}
@@ -224,7 +224,7 @@ export default function SettingsModal({ user, onClose, onSave, onAvatarChange }:
             className="w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-40 mt-1"
             style={{ background: "var(--accent)" }}
           >
-            {saving ? "A guardar…" : "Guardar alterações"}
+            {saving ? "Saving…" : "Save changes"}
           </button>
         </form>
       </div>

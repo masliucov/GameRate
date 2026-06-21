@@ -48,9 +48,9 @@ export default async function AdminPage({ searchParams }: PageProps) {
           <ShieldAlert size={20} style={{ color: "var(--accent)" }} />
         </div>
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Dashboard de Administração</h1>
+          <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Admin Dashboard</h1>
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-            Estás autenticado como <strong>{me.role}</strong>
+            You are signed in as <strong>{me.role}</strong>
           </p>
         </div>
       </div>
@@ -61,7 +61,7 @@ export default async function AdminPage({ searchParams }: PageProps) {
           type="text"
           name="q"
           defaultValue={q}
-          placeholder="Procurar utilizador por nome…"
+          placeholder="Search user by name…"
           className="w-full rounded-xl pl-9 pr-4 py-2.5 text-sm outline-none"
           style={{ background: "var(--bg-input)", border: "1px solid var(--border)", color: "var(--text-primary)" }}
         />
@@ -73,20 +73,20 @@ export default async function AdminPage({ searchParams }: PageProps) {
       >
         {list.length === 0 ? (
           <p className="text-sm text-center py-8" style={{ color: "var(--text-tertiary)" }}>
-            Sem resultados.
+            No results.
           </p>
         ) : (
           <div
-            className="grid items-center"
+            className="grid"
             style={{ gridTemplateColumns: "minmax(0,1fr) 120px 90px 110px 110px" }}
           >
             {/* Header row */}
             <div className="contents text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-tertiary)" }}>
-              <span className="px-4 py-3 border-b" style={{ borderColor: "var(--border-subtle)" }}>Utilizador</span>
-              <span className="px-4 py-3 border-b text-center" style={{ borderColor: "var(--border-subtle)" }}>Cargo</span>
+              <span className="px-4 py-3 border-b" style={{ borderColor: "var(--border-subtle)" }}>User</span>
+              <span className="px-4 py-3 border-b text-center" style={{ borderColor: "var(--border-subtle)" }}>Role</span>
               <span className="px-4 py-3 border-b text-center" style={{ borderColor: "var(--border-subtle)" }}>Reviews</span>
-              <span className="px-4 py-3 border-b text-center" style={{ borderColor: "var(--border-subtle)" }}>Estado</span>
-              <span className="px-4 py-3 border-b text-right" style={{ borderColor: "var(--border-subtle)" }}>Ações</span>
+              <span className="px-4 py-3 border-b text-center" style={{ borderColor: "var(--border-subtle)" }}>Status</span>
+              <span className="px-4 py-3 border-b text-right" style={{ borderColor: "var(--border-subtle)" }}>Actions</span>
             </div>
 
             {list.map((p) => {
@@ -111,37 +111,37 @@ export default async function AdminPage({ searchParams }: PageProps) {
                     </div>
                     <div className="min-w-0">
                       <p className="font-medium truncate group-hover:underline" style={{ color: "var(--text-primary)" }}>
-                        {p.username ?? "(sem nome)"}
+                        {p.username ?? "(no name)"}
                       </p>
                       <p className="text-xs truncate" style={{ color: "var(--text-tertiary)" }}>
                         {authUser?.email ?? "—"}
                       </p>
                     </div>
                   </Link>
-                  <div className="px-4 py-3 border-b flex justify-center" style={{ borderColor: "var(--border-subtle)" }}>
+                  <div className="px-4 py-3 border-b flex items-center justify-center" style={{ borderColor: "var(--border-subtle)" }}>
                     <RoleBadge role={p.role} />
                   </div>
-                  <div className="px-4 py-3 border-b text-center tabular-nums" style={{ borderColor: "var(--border-subtle)", color: "var(--text-secondary)" }}>
+                  <div className="px-4 py-3 border-b flex items-center justify-center tabular-nums" style={{ borderColor: "var(--border-subtle)", color: "var(--text-secondary)" }}>
                     {ratingCounts.get(p.id) ?? 0}
                   </div>
-                  <div className="px-4 py-3 border-b flex justify-center" style={{ borderColor: "var(--border-subtle)" }}>
+                  <div className="px-4 py-3 border-b flex items-center justify-center" style={{ borderColor: "var(--border-subtle)" }}>
                     {banned ? (
                       <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-md" style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
-                        <Ban size={11} /> Banido
+                        <Ban size={11} /> Banned
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-md" style={{ background: "rgba(34,197,94,0.15)", color: "#22c55e" }}>
-                        <CheckCircle2 size={11} /> Ativo
+                        <CheckCircle2 size={11} /> Active
                       </span>
                     )}
                   </div>
-                  <div className="px-4 py-3 border-b flex justify-end" style={{ borderColor: "var(--border-subtle)" }}>
+                  <div className="px-4 py-3 border-b flex items-center justify-end" style={{ borderColor: "var(--border-subtle)" }}>
                     <Link
                       href={`/admin/users/${p.id}`}
                       className="text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
                       style={{ background: "var(--bg-input)", color: "var(--text-primary)" }}
                     >
-                      Gerir →
+                      Manage →
                     </Link>
                   </div>
                 </div>

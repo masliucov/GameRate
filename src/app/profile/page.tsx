@@ -4,7 +4,7 @@ import ProfileClient from "./ProfileClient";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Perfil — GameRate" };
+export const metadata: Metadata = { title: "Profile — GameRate" };
 
 export default async function ProfilePage() {
   const supabase = await createClient();

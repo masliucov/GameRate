@@ -76,7 +76,7 @@ export default function ScreenshotGallery({ screenshots }: Props) {
           style={{ background: "rgba(0,0,0,0.92)" }}
           onClick={close}
         >
-          {/* Contentor da imagem */}
+          {/* Image container */}
           <div
             className="relative w-full max-w-5xl mx-4"
             style={{ aspectRatio: "16/9" }}
@@ -93,7 +93,7 @@ export default function ScreenshotGallery({ screenshots }: Props) {
             />
           </div>
 
-          {/* Fechar */}
+          {/* Close */}
           <button
             onClick={close}
             className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-white/10"
@@ -113,7 +113,7 @@ export default function ScreenshotGallery({ screenshots }: Props) {
             </button>
           )}
 
-          {/* Próximo */}
+          {/* Next */}
           {screenshots.length > 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); next(); }}

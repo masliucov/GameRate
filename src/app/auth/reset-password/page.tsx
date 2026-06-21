@@ -28,11 +28,11 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     setError("");
     if (password.length < 6) {
-      setError("A password tem de ter pelo menos 6 caracteres.");
+      setError("Password must be at least 6 characters.");
       return;
     }
     if (password !== confirm) {
-      setError("As passwords não coincidem.");
+      setError("Passwords do not match.");
       return;
     }
     setLoading(true);
@@ -65,17 +65,17 @@ export default function ResetPasswordPage() {
         ) : !authed ? (
           <div className="text-center py-4">
             <h1 className="text-lg font-bold mb-2" style={{ color: "var(--text-primary)" }}>
-              Link inválido ou expirado
+              Invalid or expired link
             </h1>
             <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>
-              Pede um novo link de recuperação a partir da página de login.
+              Request a new recovery link from the login page.
             </p>
             <Link
               href="/"
               className="inline-block py-2.5 px-5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
               style={{ background: "var(--accent)" }}
             >
-              Voltar ao início
+              Back to home
             </Link>
           </div>
         ) : done ? (
@@ -84,10 +84,10 @@ export default function ResetPasswordPage() {
               <CheckCircle2 size={28} style={{ color: "#22c55e" }} />
             </div>
             <h1 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>
-              Password atualizada
+              Password updated
             </h1>
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              A redirecionar para o início…
+              Redirecting to home…
             </p>
           </div>
         ) : (
@@ -97,16 +97,16 @@ export default function ResetPasswordPage() {
                 <KeyRound size={26} style={{ color: "var(--accent)" }} />
               </div>
               <h1 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>
-                Nova password
+                New password
               </h1>
               <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                Define a nova password para a tua conta.
+                Set a new password for your account.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <label className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
-                Nova password
+                New password
                 <input
                   type="password"
                   value={password}
@@ -119,7 +119,7 @@ export default function ResetPasswordPage() {
                 />
               </label>
               <label className="text-xs font-medium" style={{ color: "var(--text-secondary)" }}>
-                Confirmar password
+                Confirm password
                 <input
                   type="password"
                   value={confirm}
@@ -139,7 +139,7 @@ export default function ResetPasswordPage() {
                 className="w-full py-2.5 rounded-xl text-sm font-semibold text-white mt-2 transition-opacity disabled:opacity-50"
                 style={{ background: "var(--accent)" }}
               >
-                {loading ? "A guardar…" : "Atualizar password"}
+                {loading ? "Saving…" : "Update password"}
               </button>
             </form>
           </>

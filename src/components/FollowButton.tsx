@@ -60,7 +60,7 @@ export default function FollowButton({ targetUserId, initialIsFollowing, onFollo
       }}
     >
       {isFollowing ? <UserCheck size={15} /> : <UserPlus size={15} />}
-      {isFollowing ? "A seguir" : "Seguir"}
+      {isFollowing ? "Following" : "Follow"}
     </button>
   );
 }

@@ -39,21 +39,21 @@ export default function GameCard({ game }: Props) {
   return (
     <Link
       href={`/games/${game.slug}`}
-      aria-label={`Ver detalhes de ${game.name}`}
+      aria-label={`View details for ${game.name}`}
       className="group block rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-[var(--bg)]"
     >
       <div
-        className="card overflow-hidden"
-        style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
+        className="card glow-hover overflow-hidden h-full"
+        style={{ background: "var(--bg-card)" }}
       >
         {/* Cover */}
-        <div className="relative aspect-video bg-gray-100 dark:bg-gray-800 overflow-hidden">
+        <div className="relative aspect-video overflow-hidden" style={{ background: "var(--bg-subtle)" }}>
           {game.background_image ? (
             <Image
               src={game.background_image}
               alt={game.name}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           ) : (

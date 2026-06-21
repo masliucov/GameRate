@@ -39,7 +39,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         className="inline-flex items-center gap-1.5 text-sm mb-5 transition-opacity hover:opacity-70"
         style={{ color: "var(--text-secondary)" }}
       >
-        <ArrowLeft size={14} /> Voltar ao dashboard
+        <ArrowLeft size={14} /> Back to dashboard
       </Link>
 
       {/* Header: profile card */}
@@ -60,7 +60,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <h1 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
-              {profile.username ?? "(sem nome)"}
+              {profile.username ?? "(no name)"}
             </h1>
             <span
               className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-md"
@@ -77,7 +77,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             </span>
             {profile.banned_at && (
               <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-md" style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}>
-                Banido
+                Banned
               </span>
             )}
           </div>
@@ -85,10 +85,10 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
             <span className="flex items-center gap-2"><Mail size={13} /> {authUser?.user?.email ?? "—"}</span>
             {authUser?.user?.created_at && (
               <span className="flex items-center gap-2">
-                <Calendar size={13} /> Registado a {new Date(authUser.user.created_at).toLocaleDateString("pt-PT")}
+                <Calendar size={13} /> Registado a {new Date(authUser.user.created_at).toLocaleDateString("en-US")}
               </span>
             )}
-            <span className="flex items-center gap-2"><Star size={13} /> {ratings?.length ?? 0} avaliações</span>
+            <span className="flex items-center gap-2"><Star size={13} /> {ratings?.length ?? 0} ratings</span>
             {profile.banned_at && profile.banned_reason && (
               <span className="text-xs mt-1" style={{ color: "#ef4444" }}>
                 Motivo: {profile.banned_reason}
@@ -101,7 +101,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
           className="text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
           style={{ background: "var(--bg-input)", color: "var(--text-primary)" }}
         >
-          Ver perfil público
+          View public profile
         </Link>
       </div>
 
@@ -116,11 +116,11 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
 
       {/* Reviews */}
       <h2 className="text-lg font-bold mt-8 mb-3" style={{ color: "var(--text-primary)" }}>
-        Avaliações e comentários
+        Ratings and reviews
       </h2>
       {(ratings?.length ?? 0) === 0 ? (
         <p className="text-sm py-6 text-center rounded-2xl" style={{ color: "var(--text-tertiary)", background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }}>
-          Este utilizador ainda não avaliou jogos.
+          This user hasn't rated any games yet.
         </p>
       ) : (
         <div className="space-y-2">
@@ -151,7 +151,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
                   </p>
                 )}
                 <p className="text-[10px] mt-2" style={{ color: "var(--text-tertiary)" }}>
-                  {new Date(r.created_at).toLocaleString("pt-PT")}
+                  {new Date(r.created_at).toLocaleString("en-US")}
                 </p>
               </div>
               <DeleteReviewButton ratingId={r.id} />

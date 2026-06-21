@@ -47,7 +47,7 @@ export default function FollowListModal({ profileId, type, onClose }: Props) {
           style={{ borderBottom: "1px solid var(--border-subtle)" }}
         >
           <h2 className="font-semibold text-base" style={{ color: "var(--text-primary)" }}>
-            {type === "followers" ? "Seguidores" : "A seguir"}
+            {type === "followers" ? "Followers" : "Following"}
           </h2>
           <button onClick={onClose} style={{ color: "var(--text-tertiary)" }}>
             <X size={18} />
@@ -62,7 +62,7 @@ export default function FollowListModal({ profileId, type, onClose }: Props) {
             </div>
           ) : users.length === 0 ? (
             <p className="text-center py-10 text-sm" style={{ color: "var(--text-tertiary)" }}>
-              {type === "followers" ? "Sem seguidores ainda" : "Não segue ninguém ainda"}
+              {type === "followers" ? "No followers yet" : "Not following anyone yet"}
             </p>
           ) : (
             <ul>

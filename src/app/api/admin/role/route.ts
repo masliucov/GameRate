@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
   if (userId === me.id) {
-    return NextResponse.json({ error: "Não podes alterar o teu próprio cargo" }, { status: 400 });
+    return NextResponse.json({ error: "You cannot change your own role" }, { status: 400 });
   }
 
   const { error } = await supabaseAdmin

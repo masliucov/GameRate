@@ -6,13 +6,13 @@ import SupabaseProvider from "@/components/SupabaseProvider";
 import ScrollToTop from "@/components/ScrollToTop";
 
 export const metadata: Metadata = {
-  title: "GameRate — Descobre e avalia videojogos",
-  description: "A tua base de dados de videojogos. Descobre, pesquisa e acompanha os melhores jogos.",
+  title: "GameRate — Discover and rate video games",
+  description: "Your video game database. Discover, search, and follow the best games.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <ThemeProvider>
           <SupabaseProvider>
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             className="border-t mt-20 py-8 text-center text-xs"
             style={{ borderColor: "var(--border-subtle)", color: "var(--text-tertiary)" }}
           >
-            GameRate © {new Date().getFullYear()} · Dados por{" "}
+            GameRate © {new Date().getFullYear()} · Data by{" "}
             <a
               href="https://rawg.io"
               target="_blank"

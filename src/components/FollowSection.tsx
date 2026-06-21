@@ -39,16 +39,16 @@ export default function FollowSection({
           onClick={() => setModal("followers")}
           className="hover:underline transition-opacity hover:opacity-70"
         >
-          <strong style={{ color: "var(--text-primary)" }}>{followersCount}</strong> seguidores
+          <strong style={{ color: "var(--text-primary)" }}>{followersCount}</strong> followers
         </button>
         <button
           onClick={() => setModal("following")}
           className="hover:underline transition-opacity hover:opacity-70"
         >
-          <strong style={{ color: "var(--text-primary)" }}>{followingCount}</strong> a seguir
+          <strong style={{ color: "var(--text-primary)" }}>{followingCount}</strong> following
         </button>
-        <span><strong style={{ color: "var(--text-primary)" }}>{libraryCount}</strong> biblioteca</span>
-        <span><strong style={{ color: "var(--text-primary)" }}>{ratingsCount}</strong> avaliações</span>
+        <span><strong style={{ color: "var(--text-primary)" }}>{libraryCount}</strong> in library</span>
+        <span><strong style={{ color: "var(--text-primary)" }}>{ratingsCount}</strong> ratings</span>
       </div>
 
       {modal && (

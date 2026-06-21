@@ -2,6 +2,7 @@ import { getPopularGames, getNewGames, getTopRatedGames, getHeroGames, getPlatfo
 import HeroSlider from "@/components/HeroSlider";
 import GameGrid from "@/components/GameGrid";
 import SectionHeader from "@/components/SectionHeader";
+import Reveal from "@/components/motion/Reveal";
 import { Gamepad2, Package } from "lucide-react";
 
 export default async function HomePage() {
@@ -14,46 +15,51 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-14">
-      <div className="space-y-4">
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-16">
+      <div className="space-y-6">
         <HeroSlider games={heroGames} />
 
-        {/* Stats bar */}
+        {/* Stats — minimal, no box */}
         <div
-          className="flex items-center justify-center gap-6 py-3 px-4 rounded-xl text-sm flex-wrap"
-          style={{ background: "var(--bg-card)", border: "1px solid var(--border-subtle)" }}
+          className="flex items-center justify-center gap-6 text-sm flex-wrap"
+          style={{ color: "var(--text-secondary)" }}
         >
-          <span className="flex items-center gap-2" style={{ color: "var(--text-secondary)" }}>
-            <Gamepad2 size={14} style={{ color: "var(--accent)" }} />
+          <span className="flex items-center gap-2">
+            <Gamepad2 size={15} style={{ color: "var(--accent)" }} />
             <strong style={{ color: "var(--text-primary)" }}>
-              {stats.games.toLocaleString("pt-PT")}
-            </strong>{" "}jogos disponíveis
+              {stats.games.toLocaleString("en-US")}
+            </strong>{" "}games available
           </span>
           <span className="w-px h-4 hidden sm:block" style={{ background: "var(--border)" }} />
-          <span className="flex items-center gap-2" style={{ color: "var(--text-secondary)" }}>
-            <Package size={14} style={{ color: "var(--accent)" }} />
+          <span className="flex items-center gap-2">
+            <Package size={15} style={{ color: "var(--accent)" }} />
             <strong style={{ color: "var(--text-primary)" }}>
-              {stats.dlcs.toLocaleString("pt-PT")}
-            </strong>{" "}DLCs e expansões
+              {stats.dlcs.toLocaleString("en-US")}
+            </strong>{" "}DLCs & expansions
           </span>
         </div>
       </div>
 
-      <section>
-        <SectionHeader title="Populares" subtitle="Os mais jogados e bem avaliados" href="/search?sort=popular" />
-        <GameGrid games={popular.results} cols={4} />
-      </section>
+      <Reveal>
+        <section>
+          <SectionHeader title="Popular" subtitle="The most played and best rated" href="/search?sort=popular" />
+          <GameGrid games={popular.results} cols={4} />
+        </section>
+      </Reveal>
 
-      <section>
-        <SectionHeader title="Mais Votados" subtitle="Melhores pontuações no Metacritic" href="/search?sort=top" />
-        <GameGrid games={topRated.results.slice(0, 8)} cols={4} />
-      </section>
+      <Reveal>
+        <section>
+          <SectionHeader title="Top Rated" subtitle="Best Metacritic scores" href="/search?sort=top" />
+          <GameGrid games={topRated.results.slice(0, 8)} cols={4} />
+        </section>
+      </Reveal>
 
-      <section>
-        <SectionHeader title="Lançamentos Recentes" subtitle="Os jogos mais recentes" href="/search?sort=new" />
-        <GameGrid games={newGames.results} cols={4} />
-      </section>
+      <Reveal>
+        <section>
+          <SectionHeader title="Recent Releases" subtitle="The newest games" href="/search?sort=new" />
+          <GameGrid games={newGames.results} cols={4} />
+        </section>
+      </Reveal>
     </div>
   );
 }
-

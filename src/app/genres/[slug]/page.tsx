@@ -11,12 +11,12 @@ interface Props {
 }
 
 const SORT_OPTIONS = [
-  { key: "popular",    label: "Populares",          ordering: "-added" },
+  { key: "popular",    label: "Popular",          ordering: "-added" },
   { key: "metacritic", label: "Metacritic",          ordering: "-metacritic" },
-  { key: "users",      label: "Utilizadores",        ordering: "-rating" },
-  { key: "reviews",    label: "Nº de avaliações",   ordering: "-ratings_count" },
-  { key: "new",        label: "Recentes",            ordering: "-released" },
-  { key: "playtime",   label: "Mais jogados",        ordering: "-playtime" },
+  { key: "users",      label: "Users",        ordering: "-rating" },
+  { key: "reviews",    label: "# of ratings",   ordering: "-ratings_count" },
+  { key: "new",        label: "Recent",            ordering: "-released" },
+  { key: "playtime",   label: "Most played",        ordering: "-playtime" },
   { key: "name",       label: "A–Z",                 ordering: "name" },
 ];
 
@@ -44,14 +44,14 @@ export default async function GenrePage({ params, searchParams }: Props) {
         style={{ color: "var(--accent)" }}
       >
         <ChevronLeft size={15} />
-        Géneros
+        Genres
       </Link>
 
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>{name}</h1>
         <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-          {count.toLocaleString("pt-PT")} jogos
+          {count.toLocaleString("en-US")} games
         </p>
       </div>
 
@@ -64,7 +64,7 @@ export default async function GenrePage({ params, searchParams }: Props) {
                 className="text-xs font-medium px-1"
                 style={{ color: "var(--text-tertiary)" }}
               >
-                Mais votados:
+                Top rated:
               </span>
             )}
             {i === 4 && (
@@ -91,7 +91,7 @@ export default async function GenrePage({ params, searchParams }: Props) {
       {results.length === 0 ? (
         <div className="text-center py-24" style={{ color: "var(--text-tertiary)" }}>
           <div className="text-5xl mb-4">🎮</div>
-          <p style={{ color: "var(--text-secondary)" }}>Nenhum jogo encontrado neste género.</p>
+          <p style={{ color: "var(--text-secondary)" }}>No games found in this genre.</p>
         </div>
       ) : (
         <GameGrid games={results} cols={5} />

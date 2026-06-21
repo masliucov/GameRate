@@ -18,7 +18,7 @@ export default function AuthButton() {
         className="text-sm font-semibold px-4 py-1.5 rounded-full text-white transition-opacity hover:opacity-80"
         style={{ background: "var(--accent)" }}
       >
-        Entrar
+        Sign in
       </button>
       {showModal && <AuthModal onClose={() => setShowModal(false)} />}
     </>

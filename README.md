@@ -261,7 +261,7 @@ create policy "game_ratings_admin_delete"
   using (public.is_admin(auth.uid()) or auth.uid() = user_id);
 ```
 
-After running this, the seeded super admin will see a **Dashboard de Admin** link in the user menu and can access `/admin` to manage users (promote/demote, ban, delete reviews).
+After running this, the seeded super admin will see a **Admin Dashboard** link in the user menu and can access `/admin` to manage users (promote/demote, ban, delete reviews).
 
 ### 4. Run the development server
 

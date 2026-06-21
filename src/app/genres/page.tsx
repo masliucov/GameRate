@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Géneros — GameRate",
+  title: "Genres — GameRate",
 };
 
 const GENRE_EMOJI: Record<string, string> = {
@@ -23,9 +23,9 @@ export default async function GenresPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>Géneros</h1>
+        <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>Genres</h1>
         <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-          Explora jogos por categoria
+          Explore games by category
         </p>
       </div>
 

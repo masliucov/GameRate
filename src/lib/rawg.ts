@@ -173,7 +173,7 @@ export async function getHeroGames(): Promise<Game[]> {
     ).then((r) => r.json() as Promise<GamesResponse>),
   ]);
 
-  // Junta os dois resultados, remove duplicados e jogos sem imagem
+  // Merge both result sets, remove duplicates and games without an image
   const seen = new Set<number>();
   const pool: Game[] = [];
   for (const g of [...recent.results, ...trending.results]) {

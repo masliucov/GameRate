@@ -16,17 +16,17 @@ interface Props {
 }
 
 const LABELS: Record<string, string> = {
-  "0.5": "Horrível", "1": "Muito fraco", "1.5": "Fraco",
-  "2": "Mau", "2.5": "Razoável", "3": "Ok",
-  "3.5": "Bom", "4": "Muito bom", "4.5": "Ótimo", "5": "Excelente",
+  "0.5": "Horrible", "1": "Very poor", "1.5": "Poor",
+  "2": "Bad", "2.5": "Average", "3": "Ok",
+  "3.5": "Good", "4": "Very good", "4.5": "Great", "5": "Excellent",
 };
 
 function HalfStar({ size, filled, half }: { size: number; filled: boolean; half: boolean }) {
   return (
     <div className="relative" style={{ width: size, height: size, flexShrink: 0 }}>
-      {/* Estrela vazia (fundo) */}
+      {/* Empty star (background) */}
       <Star size={size} style={{ color: "var(--border)", position: "absolute", top: 0, left: 0 }} />
-      {/* Estrela preenchida com clip: 100% cheio, 50% meia estrela, 0% vazio */}
+      {/* Star filled with clip: 100% full, 50% half star, 0% empty */}
       <div style={{ position: "absolute", top: 0, left: 0, overflow: "hidden", width: filled ? "100%" : half ? "50%" : "0%" }}>
         <Star size={size} className="fill-yellow-400 text-yellow-400" />
       </div>
@@ -93,7 +93,7 @@ export default function RatingModal({ gameSlug, gameName, gameImage, initialRati
     );
 
     if (error) {
-      setSaveError("Erro ao guardar. Tenta novamente.");
+      setSaveError("Error saving. Please try again.");
       setLoading(false);
       return;
     }
@@ -126,7 +126,7 @@ export default function RatingModal({ gameSlug, gameName, gameImage, initialRati
       <div className="w-full max-w-sm rounded-2xl p-6" style={{ background: "var(--bg-card)", boxShadow: "var(--shadow-lg)" }} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
-            {initialRating ? "Editar avaliação" : "Avaliar jogo"}
+            {initialRating ? "Edit review" : "Rate game"}
           </h2>
           <button onClick={onClose} className="transition-opacity hover:opacity-60" style={{ color: "var(--text-tertiary)" }}>
             <X size={18} />
@@ -154,11 +154,11 @@ export default function RatingModal({ gameSlug, gameName, gameImage, initialRati
           />
           {saveError && <p className="text-xs text-red-500">{saveError}</p>}
           <button type="submit" disabled={!rating || loading} className="w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-40" style={{ background: "var(--accent)" }}>
-            {loading ? "A guardar…" : "Guardar avaliação"}
+            {loading ? "Saving…" : "Save rating"}
           </button>
           {initialRating && (
             <button type="button" onClick={handleDelete} disabled={loading} className="w-full py-2 text-sm transition-opacity hover:opacity-70 disabled:opacity-40" style={{ color: "var(--text-tertiary)" }}>
-              Remover avaliação
+              Remove rating
             </button>
           )}
         </form>

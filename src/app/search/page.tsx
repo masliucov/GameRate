@@ -14,19 +14,19 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { q, sort } = await searchParams;
   if (q) return { title: `"${q}" — GameRate` };
   const map: Record<string, string> = {
-    popular: "Populares", new: "Recentes",
-    metacritic: "Mais votados — Metacritic", users: "Mais votados — Utilizadores",
-    reviews: "Mais avaliados",
+    popular: "Popular", new: "Recent",
+    metacritic: "Top rated — Metacritic", users: "Top rated — Users",
+    reviews: "Most rated",
   };
-  return { title: `${map[sort ?? "popular"] ?? "Jogos"} — GameRate` };
+  return { title: `${map[sort ?? "popular"] ?? "Games"} — GameRate` };
 }
 
 const SORT_TABS = [
-  { key: "popular",    label: "Populares" },
-  { key: "metacritic", label: "Metacritic",        group: "Mais votados:" },
-  { key: "users",      label: "Utilizadores" },
-  { key: "reviews",    label: "Nº de avaliações" },
-  { key: "new",        label: "Recentes",           divider: true },
+  { key: "popular",    label: "Popular" },
+  { key: "metacritic", label: "Metacritic",        group: "Top rated:" },
+  { key: "users",      label: "Users" },
+  { key: "reviews",    label: "# of ratings" },
+  { key: "new",        label: "Recent",           divider: true },
 ];
 
 const SEARCH_ORDERING: Record<string, string> = {
@@ -69,33 +69,33 @@ export default async function SearchPage({ searchParams }: Props) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Cabeçalho */}
+      {/* Header */}
       <div className="mb-8">
         {q ? (
           <>
             <div className="flex items-center gap-1.5 text-sm mb-1" style={{ color: "var(--text-tertiary)" }}>
               <Search size={13} />
-              Resultados para
+              Results for
             </div>
             <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
               &ldquo;{q}&rdquo;
             </h1>
             <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-              {count.toLocaleString("pt-PT")} jogos encontrados
+              {count.toLocaleString("en-US")} games found
             </p>
           </>
         ) : (
           <h1 className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
-            {SORT_TABS.find((t) => t.key === sort)?.label ?? "Jogos"}
+            {SORT_TABS.find((t) => t.key === sort)?.label ?? "Games"}
           </h1>
         )}
         {!q && (
           <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-            {count.toLocaleString("pt-PT")} jogos
+            {count.toLocaleString("en-US")} games
           </p>
         )}
 
-        {/* Tabs de ordenação */}
+        {/* Sort tabs */}
         <div className="flex items-center gap-2 mt-4 flex-wrap">
           {SORT_TABS.map(({ key, label, group, divider }) => (
             <Fragment key={key}>
@@ -129,9 +129,9 @@ export default async function SearchPage({ searchParams }: Props) {
         <div className="text-center py-24" style={{ color: "var(--text-tertiary)" }}>
           <div className="text-5xl mb-4">🎮</div>
           <p className="text-lg font-medium" style={{ color: "var(--text-secondary)" }}>
-            Nenhum jogo encontrado
+            No games found
           </p>
-          <p className="text-sm mt-1">Tenta ajustar os filtros ou pesquisar por outro título.</p>
+          <p className="text-sm mt-1">Try adjusting the filters or searching for another title.</p>
         </div>
       ) : (
         <GameGrid games={results} cols={5} />

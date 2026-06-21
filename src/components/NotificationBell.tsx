@@ -20,10 +20,10 @@ function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
   if (mins < 1) return "agora mesmo";
-  if (mins < 60) return `há ${mins}min`;
+  if (mins < 60) return `${mins}min ago`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `há ${hrs}h`;
-  return `há ${Math.floor(hrs / 24)}d`;
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
 }
 
 export default function NotificationBell() {
@@ -99,12 +99,12 @@ export default function NotificationBell() {
           style={{ background: "var(--bg-elevated)", boxShadow: "var(--shadow-lg)", border: "1px solid var(--border-subtle)" }}
         >
           <div className="px-4 py-3 border-b" style={{ borderColor: "var(--border-subtle)" }}>
-            <h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Notificações</h3>
+            <h3 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>Notifications</h3>
           </div>
 
           {notifications.length === 0 ? (
             <div className="px-4 py-8 text-center text-sm" style={{ color: "var(--text-tertiary)" }}>
-              Sem notificações
+              No notifications
             </div>
           ) : (
             <div className="max-h-80 overflow-y-auto">
@@ -128,10 +128,10 @@ export default function NotificationBell() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm leading-snug" style={{ color: "var(--text-primary)" }}>
-                        <span className="font-semibold">{n.from_profile?.username ?? "Alguém"}</span>
-                        {n.type === "new_follower" && " começou a seguir-te"}
-                        {n.type === "review_like" && " gostou do teu comentário"}
-                        {n.type === "review_dislike" && " não gostou do teu comentário"}
+                        <span className="font-semibold">{n.from_profile?.username ?? "Someone"}</span>
+                        {n.type === "new_follower" && " started following you"}
+                        {n.type === "review_like" && " liked your comment"}
+                        {n.type === "review_dislike" && " disliked your comment"}
                       </p>
                       <p className="text-xs mt-0.5" style={{ color: "var(--text-tertiary)" }}>
                         {timeAgo(n.created_at)}

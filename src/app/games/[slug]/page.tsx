@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: game.description_raw?.slice(0, 160),
     };
   } catch {
-    return { title: "Jogo não encontrado — GameRate" };
+    return { title: "Game not found — GameRate" };
   }
 }
 
@@ -62,11 +62,8 @@ function Pill({ children }: { children: React.ReactNode }) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div
-      className="rounded-2xl p-6 border"
-      style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)", boxShadow: "var(--shadow-sm)" }}
-    >
-      <h2 className="text-base font-semibold mb-4" style={{ color: "var(--text-primary)" }}>{title}</h2>
+    <div className="glass-panel p-6">
+      <h2 className="font-display text-lg font-semibold mb-4" style={{ color: "var(--text-primary)" }}>{title}</h2>
       {children}
     </div>
   );
@@ -92,9 +89,9 @@ export default async function GamePage({ params }: Props) {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <BackButton />
 
-      {/* Imagem de destaque */}
+      {/* Hero image */}
       <div
-        className="relative w-full rounded-2xl overflow-hidden mb-8"
+        className="relative w-full rounded-3xl overflow-hidden mb-8 glass-panel"
         style={{ aspectRatio: "21/7", minHeight: 200, maxHeight: 400 }}
       >
         {game.background_image && (
@@ -109,32 +106,32 @@ export default async function GamePage({ params }: Props) {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight">{game.name}</h1>
+          <h1 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-lg">{game.name}</h1>
           {game.released && (
             <p className="text-white/60 mt-2 flex items-center gap-1.5 text-sm">
               <Calendar size={13} />
-              {new Date(game.released).toLocaleDateString("pt-PT", { year: "numeric", month: "long", day: "numeric" })}
+              {new Date(game.released).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </p>
           )}
         </div>
       </div>
 
-      {/* Ações */}
+      {/* Actions */}
       <div className="mb-6">
         <GameActions gameSlug={game.slug} gameName={game.name} gameImage={game.background_image} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Coluna principal */}
+        {/* Main column */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Pontuações */}
-          <Section title="Avaliação">
+          {/* Scores */}
+          <Section title="Rating">
             <div className="flex items-center gap-8 flex-wrap">
               {game.metacritic ? (
                 <ScorePill score={game.metacritic} label="Metacritic" />
               ) : null}
               {game.rating > 0 && (
-                <ScorePill score={Math.round(game.rating * 20)} label="Utilizadores" />
+                <ScorePill score={Math.round(game.rating * 20)} label="Users" />
               )}
               <div className="flex flex-col gap-1.5 ml-2">
                 <div className="flex items-center gap-1.5">
@@ -145,35 +142,35 @@ export default async function GamePage({ params }: Props) {
                   <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>/ 5</span>
                 </div>
                 <p className="text-sm" style={{ color: "var(--text-tertiary)" }}>
-                  {game.ratings_count.toLocaleString("pt-PT")} avaliações
+                  {game.ratings_count.toLocaleString("en-US")} ratings
                 </p>
                 {game.playtime > 0 && (
                   <p className="text-sm flex items-center gap-1" style={{ color: "var(--text-tertiary)" }}>
                     <Clock size={12} />
-                    ~{game.playtime}h de jogo
+                    ~{game.playtime}h playtime
                   </p>
                 )}
               </div>
             </div>
           </Section>
 
-          {/* Descrição */}
+          {/* Description */}
           {game.description_raw && (
-            <Section title="Sobre o jogo">
+            <Section title="About the game">
               <ExpandableDescription text={game.description_raw} />
             </Section>
           )}
 
-          {/* Capturas de ecrã */}
+          {/* Screenshots */}
           {screenshots.results.length > 0 && (
             <Section title="Screenshots">
               <ScreenshotGallery screenshots={screenshots.results} />
             </Section>
           )}
 
-          {/* DLCs & Expansões */}
+          {/* DLCs & Expansions */}
           {additions.results.length > 0 && (
-            <Section title="DLCs & Expansões">
+            <Section title="DLCs & Expansions">
               <div className="flex flex-col gap-2">
                 {additions.results.map((dlc) => (
                   <Link
@@ -193,7 +190,7 @@ export default async function GamePage({ params }: Props) {
                       <p className="text-sm font-medium truncate" style={{ color: "var(--text-primary)" }}>{dlc.name}</p>
                       {dlc.released && (
                         <p className="text-xs mt-0.5" style={{ color: "var(--text-tertiary)" }}>
-                          {new Date(dlc.released).toLocaleDateString("pt-PT", { year: "numeric", month: "short" })}
+                          {new Date(dlc.released).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
                         </p>
                       )}
                     </div>
@@ -225,21 +222,18 @@ export default async function GamePage({ params }: Props) {
             </Section>
           )}
 
-          {/* Avaliações e comentários da comunidade */}
+          {/* Community ratings and reviews */}
           <ReviewsSection gameSlug={game.slug} gameName={game.name} gameImage={game.background_image} />
         </div>
 
-        {/* Barra lateral */}
+        {/* Sidebar */}
         <div className="space-y-4">
-          <div
-            className="rounded-2xl p-5 border space-y-5"
-            style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)", boxShadow: "var(--shadow-sm)" }}
-          >
-            <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>Informações</h2>
+          <div className="glass-panel p-6 space-y-5 lg:sticky lg:top-20">
+            <h2 className="font-display text-lg font-semibold" style={{ color: "var(--text-primary)" }}>Information</h2>
 
             {game.genres?.length > 0 && (
               <div>
-                <p className="text-xs uppercase tracking-wider mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>Géneros</p>
+                <p className="text-xs uppercase tracking-wider mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>Genres</p>
                 <div className="flex flex-wrap gap-1.5">
                   {game.genres.map((g) => (
                     <Link
@@ -257,7 +251,7 @@ export default async function GamePage({ params }: Props) {
 
             {platforms.length > 0 && (
               <div>
-                <p className="text-xs uppercase tracking-wider mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>Plataformas</p>
+                <p className="text-xs uppercase tracking-wider mb-2 font-medium" style={{ color: "var(--text-tertiary)" }}>Platforms</p>
                 <div className="flex flex-wrap gap-1.5">
                   {platforms.map((p) => <Pill key={p.id}>{p.name}</Pill>)}
                 </div>
@@ -266,7 +260,7 @@ export default async function GamePage({ params }: Props) {
 
             {(game.developers?.length ?? 0) > 0 && (
               <div>
-                <p className="text-xs uppercase tracking-wider mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Desenvolvedor</p>
+                <p className="text-xs uppercase tracking-wider mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Developer</p>
                 <div className="flex flex-wrap gap-1.5">
                   {game.developers!.map((d) => <Pill key={d.id}>{d.name}</Pill>)}
                 </div>
@@ -275,7 +269,7 @@ export default async function GamePage({ params }: Props) {
 
             {(game.publishers?.length ?? 0) > 0 && (
               <div>
-                <p className="text-xs uppercase tracking-wider mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Editora</p>
+                <p className="text-xs uppercase tracking-wider mb-1.5 font-medium" style={{ color: "var(--text-tertiary)" }}>Publisher</p>
                 <div className="flex flex-wrap gap-1.5">
                   {game.publishers!.map((p) => <Pill key={p.id}>{p.name}</Pill>)}
                 </div>
@@ -298,7 +292,7 @@ export default async function GamePage({ params }: Props) {
                 style={{ color: "var(--accent)" }}
               >
                 <Globe size={13} />
-                Website oficial
+                Official website
               </a>
             )}
           </div>

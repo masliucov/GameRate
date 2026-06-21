@@ -11,11 +11,11 @@ import NotificationBell from "./NotificationBell";
 import { useUser } from "./SupabaseProvider";
 
 const NAV_BASE = [
-  { href: "/", label: "Início", exact: true, authRequired: false },
+  { href: "/", label: "Home", exact: true, authRequired: false },
   { href: "/feed", label: "Feed", authRequired: true },
-  { href: "/search?sort=popular", label: "Populares", authRequired: false },
-  { href: "/search?sort=new", label: "Novos", authRequired: false },
-  { href: "/genres", label: "Géneros", authRequired: false },
+  { href: "/search?sort=popular", label: "Popular", authRequired: false },
+  { href: "/search?sort=new", label: "New", authRequired: false },
+  { href: "/genres", label: "Genres", authRequired: false },
 ];
 
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
@@ -112,15 +112,15 @@ export default function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0 mr-2">
+        <Link href="/" className="group flex items-center gap-2 shrink-0 mr-2">
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: "var(--accent)" }}
+            className="w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105"
+            style={{ background: "var(--accent-gradient)", boxShadow: "var(--shadow-glow)" }}
           >
-            <Gamepad2 size={15} className="text-white" />
+            <Gamepad2 size={16} className="text-white" />
           </div>
-          <span className="font-semibold text-base tracking-tight" style={{ color: "var(--text-primary)" }}>
-            Game<span style={{ color: "var(--accent)" }}>Rate</span>
+          <span className="font-display font-bold text-lg tracking-tight" style={{ color: "var(--text-primary)" }}>
+            Game<span className="text-gradient">Rate</span>
           </span>
         </Link>
 
@@ -139,13 +139,13 @@ export default function Navbar() {
         {/* Auth */}
         <AuthButton />
 
-        {/* Notificações */}
+        {/* Notifications */}
         <NotificationBell />
 
         {/* Alternar tema */}
         <ThemeToggle />
 
-        {/* Botão menu mobile */}
+        {/* Mobile menu button */}
         <button
           className="md:hidden w-9 h-9 flex items-center justify-center rounded-full"
           style={{ background: "var(--bg-input)", color: "var(--text-secondary)" }}
@@ -155,7 +155,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Navegação mobile */}
+      {/* Mobile navigation */}
       {menuOpen && (
         <div
           className="md:hidden border-t px-4 py-3 flex flex-col gap-1"

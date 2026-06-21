@@ -1,47 +1,54 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens ─── */
+/* ─── Design Tokens (minimal, Apple-like) ─── */
 :root {
   --bg: #f5f5f7;
   --bg-card: #ffffff;
   --bg-elevated: #ffffff;
-  --bg-subtle: #f5f5f7;
-  --bg-input: rgba(0,0,0,0.05);
-  --border: rgba(0,0,0,0.08);
-  --border-subtle: rgba(0,0,0,0.05);
+  --bg-subtle: #f0f0f3;
+  --bg-input: rgba(0, 0, 0, 0.05);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.06);
   --text-primary: #1d1d1f;
   --text-secondary: #6e6e73;
   --text-tertiary: #aeaeb2;
   --accent: #0071e3;
   --accent-hover: #0077ed;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.05);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
-  --navbar-bg: rgba(245,245,247,0.85);
+  --accent-soft: rgba(0, 113, 227, 0.10);
+  --accent-gradient: #0071e3; /* solid — kept as token for compatibility */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.10);
+  --shadow-glow: 0 4px 16px rgba(0, 0, 0, 0.08); /* neutral elevation */
+  --navbar-bg: rgba(245, 245, 247, 0.8);
 }
 
 .dark {
   --bg: #000000;
   --bg-card: #1c1c1e;
   --bg-elevated: #2c2c2e;
-  --bg-subtle: #1c1c1e;
-  --bg-input: rgba(255,255,255,0.07);
-  --border: rgba(255,255,255,0.08);
-  --border-subtle: rgba(255,255,255,0.04);
+  --bg-subtle: #161618;
+  --bg-input: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-subtle: rgba(255, 255, 255, 0.07);
   --text-primary: #f5f5f7;
-  --text-secondary: #aeaeb2;
-  --text-tertiary: #636366;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #6e6e73;
   --accent: #2997ff;
   --accent-hover: #409cff;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.2);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
-  --navbar-bg: rgba(0,0,0,0.85);
+  --accent-soft: rgba(41, 151, 255, 0.14);
+  --accent-gradient: #2997ff;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --navbar-bg: rgba(0, 0, 0, 0.7);
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text-primary);
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* ─── Base ─── */
@@ -57,27 +64,66 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Typography ─── */
+.font-display { font-family: var(--font-display); letter-spacing: -0.022em; }
+.text-gradient { color: var(--accent); } /* minimal: solid accent, no gradient */
+
 /* ─── Scrollbar ─── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
-/* ─── Utilities ─── */
+/* ─── Surfaces ─── */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-sm);
-  border-radius: 16px;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  border-radius: 18px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
+/* Translucent navbar — authentic Apple touch */
 .glass {
   background: var(--navbar-bg);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* glass-panel kept as a name, now a clean minimal card (no blur) */
+.glass-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* glow-hover kept as a name, now a subtle elevation on hover */
+.glow-hover { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+.glow-hover:hover { box-shadow: var(--shadow-md); }
+
+/* Solid accent pill button (Apple-style) */
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 980px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.btn-accent:hover { background: var(--accent-hover); }
+
+/* Ken Burns disabled — minimal, calm imagery */
+.animate-kenburns { animation: none; }
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

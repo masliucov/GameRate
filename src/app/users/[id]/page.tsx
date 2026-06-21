@@ -17,14 +17,14 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const { data } = await supabaseAdmin.from("profiles").select("username").eq("id", id).single();
-  return { title: data?.username ? `${data.username} — GameRate` : "Perfil — GameRate" };
+  return { title: data?.username ? `${data.username} — GameRate` : "Profile — GameRate" };
 }
 
 const TABS = [
-  { key: "library",  label: "Biblioteca",      icon: Library },
-  { key: "playing",  label: "A jogar",          icon: Gamepad2 },
-  { key: "wishlist", label: "Lista de desejos", icon: Heart },
-  { key: "ratings",  label: "Avaliações",       icon: Star },
+  { key: "library",  label: "Library",      icon: Library },
+  { key: "playing",  label: "Playing",          icon: Gamepad2 },
+  { key: "wishlist", label: "Wishlist", icon: Heart },
+  { key: "ratings",  label: "Ratings",       icon: Star },
 ] as const;
 
 type Tab = typeof TABS[number]["key"];
@@ -177,10 +177,10 @@ export default async function UserProfilePage({ params, searchParams }: Props) {
             {activeTab === "library" ? "📚" : activeTab === "wishlist" ? "❤️" : "⭐"}
           </div>
           <p className="font-medium" style={{ color: "var(--text-secondary)" }}>
-            {activeTab === "library"  ? `${profile.username} não tem jogos na biblioteca`  :
-           activeTab === "wishlist" ? `${profile.username} não tem jogos na wishlist` :
-           activeTab === "playing"  ? `${profile.username} não está a jogar nenhum jogo` :
-                                      `${profile.username} ainda não avaliou nenhum jogo`}
+            {activeTab === "library"  ? `${profile.username} has no games in their library`  :
+           activeTab === "wishlist" ? `${profile.username} has no games in their wishlist` :
+           activeTab === "playing"  ? `${profile.username} isn't playing any game` :
+                                      `${profile.username} hasn't rated any games yet`}
           </p>
         </div>
       ) : (

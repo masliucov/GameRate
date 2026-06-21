@@ -14,12 +14,12 @@ function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
   if (mins < 1) return "agora mesmo";
-  if (mins < 60) return `há ${mins} min`;
+  if (mins < 60) return `${mins} min ago`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `há ${hrs}h`;
+  if (hrs < 24) return `${hrs}h ago`;
   const days = Math.floor(hrs / 24);
-  if (days < 7) return `há ${days}d`;
-  return new Date(dateStr).toLocaleDateString("pt-PT", { day: "numeric", month: "short" });
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString("en-US", { day: "numeric", month: "short" });
 }
 
 interface ActivityItem {
@@ -38,7 +38,7 @@ export default async function FeedPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
-  // Ir buscar os IDs dos utilizadores que sigo
+  // Fetch the IDs of users I follow
   const { data: follows } = await supabaseAdmin
     .from("follows")
     .select("following_id")
@@ -51,23 +51,23 @@ export default async function FeedPage() {
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
         <div className="text-5xl mb-4">👥</div>
         <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
-          O teu feed está vazio
+          Your feed is empty
         </h1>
         <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
-          Segue outros utilizadores para ver as suas actividades aqui.
+          Follow other users to see their activity here.
         </p>
         <Link
           href="/search"
           className="inline-block px-5 py-2.5 rounded-xl text-sm font-semibold text-white"
           style={{ background: "var(--accent)" }}
         >
-          Descobrir utilizadores
+          Discover users
         </Link>
       </div>
     );
   }
 
-  // Ir buscar actividades recentes dos utilizadores seguidos
+  // Fetch recent activity from followed users
   const [{ data: ratings }, { data: library }, { data: playingData }] = await Promise.all([
     supabaseAdmin
       .from("game_ratings")
@@ -89,7 +89,7 @@ export default async function FeedPage() {
       .limit(20),
   ]);
 
-  // Ir buscar perfis de todos os utilizadores envolvidos
+  // Fetch profiles of all involved users
   const allUserIds = [...new Set([
     ...(ratings ?? []).map((r) => r.user_id),
     ...(library ?? []).map((l) => l.user_id),
@@ -101,7 +101,7 @@ export default async function FeedPage() {
     .in("id", allUserIds);
   const profileMap = new Map((profiles ?? []).map((p) => [p.id, p]));
 
-  // Juntar e ordenar todas as actividades por data
+  // Merge and sort all activities by date
   const activities: ActivityItem[] = [
     ...(ratings ?? []).map((r) => ({
       type: "rating" as const,
@@ -138,21 +138,21 @@ export default async function FeedPage() {
         <Users size={22} style={{ color: "var(--accent)" }} />
         <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>Feed</h1>
         <span className="text-sm" style={{ color: "var(--text-tertiary)" }}>
-          Actividade de {followingIds.length} {followingIds.length === 1 ? "utilizador" : "utilizadores"}
+          Activity from {followingIds.length} {followingIds.length === 1 ? "user" : "users"}
         </span>
       </div>
 
       {activities.length === 0 ? (
         <div className="text-center py-16" style={{ color: "var(--text-tertiary)" }}>
           <p className="font-medium" style={{ color: "var(--text-secondary)" }}>
-            Ainda não há actividade recente.
+            No recent activity yet.
           </p>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
           {activities.map((item, i) => {
             const profile = profileMap.get(item.userId);
-            const username = profile?.username ?? "Utilizador";
+            const username = profile?.username ?? "User";
             const inicial = username[0].toUpperCase();
 
             return (
@@ -161,7 +161,7 @@ export default async function FeedPage() {
                 className="flex gap-3 p-4 rounded-2xl border"
                 style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
               >
-                {/* Avatar do utilizador */}
+                {/* User avatar */}
                 <Link href={`/users/${item.userId}`} className="shrink-0">
                   <div
                     className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center font-semibold text-white text-sm relative"
@@ -174,27 +174,27 @@ export default async function FeedPage() {
                 </Link>
 
                 <div className="flex-1 min-w-0">
-                  {/* Descrição da acção */}
+                  {/* Action description */}
                   <p className="text-sm mb-2" style={{ color: "var(--text-secondary)" }}>
                     <Link href={`/users/${item.userId}`} className="font-semibold hover:underline" style={{ color: "var(--text-primary)" }}>
                       {username}
                     </Link>
                     {" "}
                     {item.type === "rating" && (
-                      <>avaliou com <span className="font-semibold" style={{ color: "var(--accent)" }}>★ {item.rating}/5</span></>
+                      <>rated <span className="font-semibold" style={{ color: "var(--accent)" }}>★ {item.rating}/5</span></>
                     )}
                     {item.type === "library" && (
-                      <><BookOpen size={13} className="inline mx-0.5" /> adicionou à biblioteca</>
+                      <><BookOpen size={13} className="inline mx-0.5" /> added to library</>
                     )}
                     {item.type === "playing" && (
-                      <><Gamepad2 size={13} className="inline mx-0.5" /> está a jogar</>
+                      <><Gamepad2 size={13} className="inline mx-0.5" /> is playing</>
                     )}
                     <span className="text-xs ml-2" style={{ color: "var(--text-tertiary)" }}>
                       {timeAgo(item.date)}
                     </span>
                   </p>
 
-                  {/* Card do jogo */}
+                  {/* Game card */}
                   <Link
                     href={`/games/${item.gameSlug}`}
                     className="flex items-center gap-3 p-2.5 rounded-xl transition-opacity hover:opacity-80"

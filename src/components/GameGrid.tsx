@@ -1,4 +1,5 @@
 import GameCard from "./GameCard";
+import { Stagger, StaggerItem } from "./motion/Stagger";
 import { Game } from "@/lib/rawg";
 
 interface Props {
@@ -15,10 +16,12 @@ export default function GameGrid({ games, cols = 4 }: Props) {
   }[cols];
 
   return (
-    <div className={`grid ${colClass} gap-4`}>
+    <Stagger className={`grid ${colClass} gap-4`}>
       {games.map((game) => (
-        <GameCard key={game.id} game={game} />
+        <StaggerItem key={game.id}>
+          <GameCard game={game} />
+        </StaggerItem>
       ))}
-    </div>
+    </Stagger>
   );
 }

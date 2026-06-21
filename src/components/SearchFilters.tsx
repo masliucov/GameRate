@@ -37,33 +37,33 @@ export default function SearchFilters({ genres }: Props) {
     <div className="flex items-center gap-2 flex-wrap mt-3">
       <SlidersHorizontal size={13} style={{ color: "var(--text-tertiary)" }} />
 
-      {/* Filtro por género */}
+      {/* Filter by genre */}
       <select
         value={genre}
         onChange={(e) => update("genre", e.target.value)}
         className="rounded-lg px-3 py-1.5 text-xs outline-none cursor-pointer"
         style={selectStyle}
       >
-        <option value="">Todos os géneros</option>
+        <option value="">All genres</option>
         {genres.map((g) => (
           <option key={g.id} value={g.slug}>{g.name}</option>
         ))}
       </select>
 
-      {/* Filtro por ano */}
+      {/* Filter by year */}
       <select
         value={year}
         onChange={(e) => update("year", e.target.value)}
         className="rounded-lg px-3 py-1.5 text-xs outline-none cursor-pointer"
         style={selectStyle}
       >
-        <option value="">Todos os anos</option>
+        <option value="">All years</option>
         {ANOS.map((a) => (
           <option key={a} value={a}>{a}</option>
         ))}
       </select>
 
-      {/* Limpar filtros */}
+      {/* Clear filters */}
       {hasFilters && (
         <button
           onClick={() => {
@@ -75,7 +75,7 @@ export default function SearchFilters({ genres }: Props) {
           className="text-xs px-2.5 py-1.5 rounded-lg transition-opacity hover:opacity-70"
           style={{ color: "var(--accent)" }}
         >
-          Limpar filtros
+          Clear filters
         </button>
       )}
     </div>

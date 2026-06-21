@@ -108,7 +108,7 @@ export default function GameActions({ gameSlug, gameName, gameImage }: Props) {
   return (
     <>
       <div className="flex gap-2 flex-wrap">
-        {/* Biblioteca */}
+        {/* Library */}
         <button
           onClick={toggleLibrary}
           disabled={loading}
@@ -120,7 +120,7 @@ export default function GameActions({ gameSlug, gameName, gameImage }: Props) {
           }}
         >
           <BookOpen size={15} />
-          {inLibrary ? "Na biblioteca ✓" : "Adicionar à biblioteca"}
+          {inLibrary ? "In library ✓" : "Add to library"}
         </button>
 
         {/* A jogar */}
@@ -135,7 +135,7 @@ export default function GameActions({ gameSlug, gameName, gameImage }: Props) {
           }}
         >
           <Gamepad2 size={15} />
-          {inPlaying ? "A jogar ✓" : "A jogar"}
+          {inPlaying ? "Playing ✓" : "Playing"}
         </button>
 
         {/* Wishlist */}
@@ -150,10 +150,10 @@ export default function GameActions({ gameSlug, gameName, gameImage }: Props) {
           }}
         >
           <Heart size={15} className={inWishlist ? "fill-red-500" : ""} />
-          {inWishlist ? "Na wishlist ✓" : "Lista de desejos"}
+          {inWishlist ? "In wishlist ✓" : "Wishlist"}
         </button>
 
-        {/* Avaliar */}
+        {/* Rate */}
         <button
           onClick={() => user ? setShowRating(true) : setShowAuth(true)}
           disabled={loading}
@@ -165,14 +165,14 @@ export default function GameActions({ gameSlug, gameName, gameImage }: Props) {
           }}
         >
           <Star size={15} className={myRating ? "fill-yellow-400 text-yellow-400" : ""} />
-          {myRating ? `A tua nota: ${myRating}/5` : "Avaliar"}
+          {myRating ? `Your rating: ${myRating}/5` : "Rate"}
         </button>
       </div>
 
       {!user && !loading && (
         <p className="text-xs mt-2" style={{ color: "var(--text-tertiary)" }}>
           <button onClick={() => setShowAuth(true)} className="underline" style={{ color: "var(--accent)" }}>Entra</button>{" "}
-          para adicionar à biblioteca ou avaliar.
+          to add to your library or rate.
         </p>
       )}
 

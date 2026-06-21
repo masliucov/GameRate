@@ -12,14 +12,14 @@ function timeAgo(dateStr: string) {
   const dias = Math.floor(diff / 86400000);
   if (dias === 0) return "hoje";
   if (dias === 1) return "ontem";
-  if (dias < 30) return `há ${dias} dias`;
+  if (dias < 30) return `${dias} days ago`;
   const meses = Math.floor(dias / 30);
-  if (meses < 12) return `há ${meses} ${meses === 1 ? "mês" : "meses"}`;
+  if (meses < 12) return `${meses} ${meses === 1 ? "month" : "months"} ago`;
   const anos = Math.floor(meses / 12);
-  return `há ${anos} ${anos === 1 ? "ano" : "anos"}`;
+  return `${anos} ${anos === 1 ? "year" : "years"} ago`;
 }
 
-// Avatar do utilizador: foto de perfil ou iniciais com cor de destaque
+// User avatar: profile photo or initials with accent color
 function Avatar({ username, avatarUrl, size = 36 }: { username: string; avatarUrl: string | null; size?: number }) {
   const inicial = (username[0] ?? "?").toUpperCase();
   return (
@@ -106,10 +106,10 @@ export default async function ReviewsSection({
       className="rounded-2xl p-6 border"
       style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)", boxShadow: "var(--shadow-sm)" }}
     >
-      {/* Cabeçalho com média geral */}
+      {/* Header with overall average */}
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-base font-semibold" style={{ color: "var(--text-primary)" }}>
-          Avaliações da comunidade
+          Community ratings
         </h2>
         <div className="flex items-center gap-2">
           <StarDisplay rating={media} size={13} />
@@ -117,12 +117,12 @@ export default async function ReviewsSection({
             {media.toFixed(1)}
           </span>
           <span className="text-xs" style={{ color: "var(--text-tertiary)" }}>
-            ({avaliacoes.length} {avaliacoes.length === 1 ? "avaliação" : "avaliações"})
+            ({avaliacoes.length} {avaliacoes.length === 1 ? "rating" : "ratings"})
           </span>
         </div>
       </div>
 
-      {/* Gráfico de distribuição */}
+      {/* Distribution chart */}
       <div className="mb-5 flex flex-col gap-1.5">
         {contagem.map(({ estrelas, total }) => {
           const pct = Math.round((total / maxContagem) * 100);
@@ -147,11 +147,11 @@ export default async function ReviewsSection({
 
       <div className="mb-5 border-t" style={{ borderColor: "var(--border-subtle)" }} />
 
-      {/* Lista de avaliações */}
+      {/* Ratings list */}
       <div className="flex flex-col divide-y" style={{ borderColor: "var(--border-subtle)" }}>
         {ordenadas.map((a) => {
           const perfil = perfilMap.get(a.user_id);
-          const username = perfil?.username ?? "Utilizador";
+          const username = perfil?.username ?? "User";
           const avatarUrl = perfil?.avatar_url ?? null;
           const isOwn = currentUser?.id === a.user_id;
           const reactionData = reactionsMap.get(a.id) ?? { likes: 0, dislikes: 0, userReaction: null };
@@ -160,7 +160,7 @@ export default async function ReviewsSection({
             <div key={a.id} className="flex gap-3 py-4 first:pt-0 last:pb-0">
               <Avatar username={username} avatarUrl={avatarUrl} size={36} />
               <div className="flex-1 min-w-0">
-                {/* Nome, estrelas, data e botões de edição */}
+                {/* Name, stars, date and edit buttons */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <Link href={`/users/${a.user_id}`} className="text-sm font-medium hover:underline" style={{ color: "var(--text-primary)" }}>
                     {username}
@@ -178,7 +178,7 @@ export default async function ReviewsSection({
                     />
                   )}
                 </div>
-                {/* Comentário (opcional) */}
+                {/* Comment (optional) */}
                 {a.review && (
                   <p className="text-sm mt-1.5 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                     {a.review}

@@ -38,21 +38,21 @@ export default function ReviewEditButtons({ gameSlug, gameName, gameImage, ratin
       <div className="flex items-center gap-0.5 ml-auto shrink-0">
         {confirming ? (
           <>
-            <span className="text-xs mr-1" style={{ color: "var(--text-tertiary)" }}>Tens a certeza?</span>
+            <span className="text-xs mr-1" style={{ color: "var(--text-tertiary)" }}>Are you sure?</span>
             <button
               onClick={handleDelete}
               disabled={deleting}
               className="text-xs px-2 py-0.5 rounded-lg font-medium transition-opacity hover:opacity-70 disabled:opacity-40"
               style={{ background: "#ef444420", color: "#ef4444" }}
             >
-              {deleting ? "…" : "Sim"}
+              {deleting ? "…" : "Yes"}
             </button>
             <button
               onClick={() => setConfirming(false)}
               className="text-xs px-2 py-0.5 rounded-lg font-medium transition-opacity hover:opacity-70 ml-1"
               style={{ background: "var(--bg-input)", color: "var(--text-secondary)" }}
             >
-              Não
+              No
             </button>
           </>
         ) : (
@@ -61,7 +61,7 @@ export default function ReviewEditButtons({ gameSlug, gameName, gameImage, ratin
               onClick={() => setShowModal(true)}
               className="p-1.5 rounded-lg transition-opacity hover:opacity-70"
               style={{ color: "var(--text-tertiary)" }}
-              title="Editar avaliação"
+              title="Edit review"
             >
               <Pencil size={12} />
             </button>
@@ -69,7 +69,7 @@ export default function ReviewEditButtons({ gameSlug, gameName, gameImage, ratin
               onClick={handleDelete}
               className="p-1.5 rounded-lg transition-opacity hover:opacity-70"
               style={{ color: "var(--text-tertiary)" }}
-              title="Remover avaliação"
+              title="Remove rating"
             >
               <Trash2 size={12} />
             </button>

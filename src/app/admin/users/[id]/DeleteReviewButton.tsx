@@ -30,14 +30,14 @@ export default function DeleteReviewButton({ ratingId }: { ratingId: number }) {
           className="text-[10px] font-bold px-2 py-1 rounded-md text-white"
           style={{ background: "#ef4444" }}
         >
-          {pending ? "…" : "Confirmar"}
+          {pending ? "…" : "Confirm"}
         </button>
         <button
           onClick={() => setConfirming(false)}
           className="text-[10px] px-2 py-1 rounded-md"
           style={{ background: "var(--bg-input)", color: "var(--text-secondary)" }}
         >
-          Cancelar
+          Cancel
         </button>
       </div>
     );
@@ -46,8 +46,8 @@ export default function DeleteReviewButton({ ratingId }: { ratingId: number }) {
   return (
     <button
       onClick={() => setConfirming(true)}
-      aria-label="Apagar avaliação"
-      title="Apagar avaliação"
+      aria-label="Delete review"
+      title="Delete review"
       className="shrink-0 self-start w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-red-500/10"
       style={{ color: "#ef4444" }}
     >

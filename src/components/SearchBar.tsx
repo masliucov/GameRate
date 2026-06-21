@@ -146,7 +146,7 @@ export default function SearchBar() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={() => hasResults && setOpen(true)}
-            placeholder="Pesquisar jogos ou utilizadores…"
+            placeholder="Search games or users…"
             autoComplete="off"
             className="w-full rounded-xl pl-8 pr-8 py-2 text-sm outline-none transition-all"
             style={{
@@ -193,22 +193,22 @@ export default function SearchBar() {
         >
           {loading && (
             <div className="px-4 py-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-              A pesquisar…
+              Searching…
             </div>
           )}
 
           {!loading && !hasResults && debouncedQuery.trim().length >= 2 && (
             <div className="px-4 py-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-              Sem resultados para &ldquo;{debouncedQuery}&rdquo;
+              No results for &ldquo;{debouncedQuery}&rdquo;
             </div>
           )}
 
-          {/* Utilizadores */}
+          {/* Users */}
           {!loading && users.length > 0 && (
             <>
               <div className="px-3 pt-2.5 pb-1">
                 <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-tertiary)" }}>
-                  Utilizadores
+                  Users
                 </span>
               </div>
               {users.map((user) => {
@@ -244,17 +244,17 @@ export default function SearchBar() {
             </>
           )}
 
-          {/* Separador entre utilizadores e jogos */}
+          {/* Separator between users and games */}
           {!loading && users.length > 0 && games.length > 0 && (
             <div className="mx-3 border-t my-1" style={{ borderColor: "var(--border-subtle)" }} />
           )}
 
-          {/* Jogos */}
+          {/* Games */}
           {!loading && games.length > 0 && (
             <>
               <div className="px-3 pt-2 pb-1">
                 <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--text-tertiary)" }}>
-                  Jogos
+                  Games
                 </span>
               </div>
               {games.map((game) => {
@@ -309,14 +309,14 @@ export default function SearchBar() {
             </>
           )}
 
-          {/* Ver todos os resultados de jogos */}
+          {/* View all game results */}
           {!loading && games.length > 0 && (
             <button
               onClick={handleSubmit as unknown as React.MouseEventHandler}
               className="w-full px-4 py-2.5 text-sm text-left transition-colors border-t"
               style={{ color: "var(--accent)", borderColor: "var(--border-subtle)" }}
             >
-              Ver todos os resultados para &ldquo;{query}&rdquo; →
+              View all results for &ldquo;{query}&rdquo; →
             </button>
           )}
         </div>

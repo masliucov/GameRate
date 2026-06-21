@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
   if (userId === me.id) {
-    return NextResponse.json({ error: "Não te podes banir a ti próprio" }, { status: 400 });
+    return NextResponse.json({ error: "You cannot ban yourself" }, { status: 400 });
   }
 
   // Protect super_admins from being banned by a regular admin
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     .maybeSingle();
 
   if (target?.role === "super_admin" && !isSuperAdmin(me.role)) {
-    return NextResponse.json({ error: "Não podes banir um super_admin" }, { status: 403 });
+    return NextResponse.json({ error: "You cannot ban a super_admin" }, { status: 403 });
   }
 
   const { error } = await supabaseAdmin

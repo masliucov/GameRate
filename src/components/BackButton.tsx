@@ -12,7 +12,7 @@ export default function BackButton() {
       style={{ color: "var(--accent)" }}
     >
       <ChevronLeft size={15} />
-      Voltar
+      Back
     </button>
   );
 }

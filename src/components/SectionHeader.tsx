@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 interface Props {
   title: string;
@@ -8,20 +9,21 @@ interface Props {
 
 export default function SectionHeader({ title, href, subtitle }: Props) {
   return (
-    <div className="flex items-baseline justify-between mb-5">
+    <div className="flex items-end justify-between mb-6 gap-4">
       <div>
-        <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{title}</h2>
+        <h2 className="font-display text-2xl md:text-3xl font-bold" style={{ color: "var(--text-primary)" }}>{title}</h2>
         {subtitle && (
-          <p className="text-sm mt-0.5" style={{ color: "var(--text-secondary)" }}>{subtitle}</p>
+          <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>{subtitle}</p>
         )}
       </div>
       {href && (
         <Link
           href={href}
-          className="text-sm font-medium transition-opacity hover:opacity-70"
+          className="group flex items-center gap-1 text-sm font-medium shrink-0 transition-opacity hover:opacity-80"
           style={{ color: "var(--accent)" }}
         >
-          Ver todos →
+          View all
+          <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
         </Link>
       )}
     </div>

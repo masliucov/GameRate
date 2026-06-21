@@ -35,10 +35,10 @@ interface Props {
 type Tab = "library" | "wishlist" | "ratings" | "playing";
 
 const TABS: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: "library",  label: "Biblioteca",      icon: <Library size={15} /> },
-  { key: "playing",  label: "A jogar",          icon: <Gamepad2 size={15} /> },
-  { key: "wishlist", label: "Lista de desejos", icon: <Heart size={15} /> },
-  { key: "ratings",  label: "Avaliações",       icon: <Star size={15} /> },
+  { key: "library",  label: "Library",      icon: <Library size={15} /> },
+  { key: "playing",  label: "Playing",          icon: <Gamepad2 size={15} /> },
+  { key: "wishlist", label: "Wishlist", icon: <Heart size={15} /> },
+  { key: "ratings",  label: "Ratings",       icon: <Star size={15} /> },
 ];
 
 function GameCard({ entry, onRemove, showRating }: { entry: GameEntry; onRemove: () => void; showRating?: boolean }) {
@@ -159,7 +159,7 @@ function ProfileContent({ user, library: initialLibrary, wishlist: initialWishli
               onClick={() => setShowSettings(true)}
               className="p-1.5 rounded-lg transition-colors hover:bg-black/5 dark:hover:bg-white/5 shrink-0"
               style={{ color: "var(--text-tertiary)" }}
-              title="Definições"
+              title="Settings"
             >
               <Settings size={16} />
             </button>
@@ -167,35 +167,35 @@ function ProfileContent({ user, library: initialLibrary, wishlist: initialWishli
           <p className="text-sm truncate" style={{ color: "var(--text-tertiary)" }}>{user.email}</p>
           <div className="flex gap-4 mt-1 text-xs flex-wrap" style={{ color: "var(--text-tertiary)" }}>
             <button onClick={() => setFollowModal("followers")} className="hover:underline hover:opacity-70 transition-opacity">
-              <strong style={{ color: "var(--text-primary)" }}>{followersCount}</strong> seguidores
+              <strong style={{ color: "var(--text-primary)" }}>{followersCount}</strong> followers
             </button>
             <button onClick={() => setFollowModal("following")} className="hover:underline hover:opacity-70 transition-opacity">
-              <strong style={{ color: "var(--text-primary)" }}>{followingCount}</strong> a seguir
+              <strong style={{ color: "var(--text-primary)" }}>{followingCount}</strong> following
             </button>
-            <span><strong style={{ color: "var(--text-primary)" }}>{library.length}</strong> biblioteca</span>
-            <span><strong style={{ color: "var(--text-primary)" }}>{ratings.length}</strong> avaliações</span>
+            <span><strong style={{ color: "var(--text-primary)" }}>{library.length}</strong> in library</span>
+            <span><strong style={{ color: "var(--text-primary)" }}>{ratings.length}</strong> ratings</span>
           </div>
         </div>
       </div>
 
-      {/* Estatísticas */}
+      {/* Statistics */}
       {ratings.length > 0 && (
         <div
           className="rounded-2xl p-4 mb-6 border"
           style={{ background: "var(--bg-card)", borderColor: "var(--border-subtle)" }}
         >
           <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "var(--text-tertiary)" }}>
-            Estatísticas
+            Statistics
           </p>
           <div className="flex items-start gap-8 flex-wrap">
-            {/* Média */}
+            {/* Average */}
             <div className="flex flex-col items-center gap-1">
               <span className="text-3xl font-bold" style={{ color: "var(--accent)" }}>
                 {mediaNotas!.toFixed(1)}
               </span>
-              <span className="text-xs" style={{ color: "var(--text-tertiary)" }}>média dada</span>
+              <span className="text-xs" style={{ color: "var(--text-tertiary)" }}>average given</span>
             </div>
-            {/* Distribuição */}
+            {/* Distribution */}
             <div className="flex flex-col gap-1 flex-1 min-w-40">
               {distribuicao.map(({ n, total }) => (
                 <div key={n} className="flex items-center gap-2">
@@ -212,10 +212,10 @@ function ProfileContent({ user, library: initialLibrary, wishlist: initialWishli
             </div>
             {/* Totais */}
             <div className="flex flex-col gap-1 text-xs" style={{ color: "var(--text-tertiary)" }}>
-              <span><strong style={{ color: "var(--text-primary)" }}>{library.length}</strong> na biblioteca</span>
+              <span><strong style={{ color: "var(--text-primary)" }}>{library.length}</strong> in library</span>
               <span><strong style={{ color: "var(--text-primary)" }}>{playing.length}</strong> a jogar</span>
               <span><strong style={{ color: "var(--text-primary)" }}>{wishlist.length}</strong> na wishlist</span>
-              <span><strong style={{ color: "var(--text-primary)" }}>{ratings.length}</strong> avaliações</span>
+              <span><strong style={{ color: "var(--text-primary)" }}>{ratings.length}</strong> ratings</span>
             </div>
           </div>
         </div>
@@ -253,10 +253,10 @@ function ProfileContent({ user, library: initialLibrary, wishlist: initialWishli
         <div className="text-center py-16" style={{ color: "var(--text-tertiary)" }}>
           <div className="text-4xl mb-3">{tab === "library" ? "📚" : tab === "wishlist" ? "❤️" : "⭐"}</div>
           <p className="font-medium" style={{ color: "var(--text-secondary)" }}>
-            {tab === "library" ? "A tua biblioteca está vazia" : tab === "wishlist" ? "A tua wishlist está vazia" : tab === "playing" ? "Não estás a jogar nenhum jogo" : "Ainda não avaliaste nenhum jogo"}
+            {tab === "library" ? "Your library is empty" : tab === "wishlist" ? "Your wishlist is empty" : tab === "playing" ? "You're not playing any game" : "You haven't rated any games yet"}
           </p>
           <p className="text-sm mt-1">
-            <Link href="/" className="underline" style={{ color: "var(--accent)" }}>Explorar jogos</Link>
+            <Link href="/" className="underline" style={{ color: "var(--accent)" }}>Explore games</Link>
           </p>
         </div>
       ) : (
